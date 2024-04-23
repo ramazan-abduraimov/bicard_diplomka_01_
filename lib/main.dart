@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Verstka_/authorization/onboarding.dart';
+import 'Verstka_/authorization/01_information/onboarding.dart';
 
 void main() {
   runApp(MyApp());
