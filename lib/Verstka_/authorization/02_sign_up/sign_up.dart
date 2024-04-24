@@ -37,7 +37,7 @@ class SignUp extends StatelessWidget {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                        prefixIcon: Icon(Icons.verified_user),
+                        prefixIcon: Icon(Icons.person),
                         labelText: "Ваше имя"),
                   ),
                   SizedBox(height: 25,),
@@ -55,7 +55,7 @@ class SignUp extends StatelessWidget {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                        prefixIcon: Icon(Icons.email_outlined),
+                        prefixIcon: Icon(Icons.lock),
                         labelText: "Пароль"),
                     obscureText: true,
                   ), SizedBox(height: 30,),
