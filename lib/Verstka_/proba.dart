@@ -1,4 +1,3 @@
-import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/MapPage.dart';
 import 'package:flutter/material.dart';
 
 class Doctor {
