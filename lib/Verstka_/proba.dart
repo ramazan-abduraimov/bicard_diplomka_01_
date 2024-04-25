@@ -1,140 +1,217 @@
-import 'dart:io';
-
+import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/MapPage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
+class Doctor {
+  final String name;
+  final String specialization;
+  final String clinic;
+  final String location;
+  final double rating;
+  final int reviews;
+  final String about;
+  final String workingHours;
 
-class MyHomePage12 extends StatefulWidget {
-  @override
-  State<MyHomePage12> createState() => _MyHomePage12State();
+  Doctor({
+    required this.name,
+    required this.specialization,
+    required this.clinic,
+    required this.location,
+    required this.rating,
+    required this.reviews,
+    required this.about,
+    required this.workingHours,
+  });
 }
 
-class _MyHomePage12State extends State<MyHomePage12> {
-   File? _image;
+class Review {
+  final String reviewerName;
+  final double rating;
+  final String reviewText;
 
+  Review({
+    required this.reviewerName,
+    required this.rating,
+    required this.reviewText,
+  });
+}
 
-  Future<void> getImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+// Simulated doctor data
+final doctorinfo = Doctor(
+  name: 'Доктор Дэвид Патель',
+  specialization: 'Кардиолог',
+  clinic: 'Золотой кардиологический центр',
+  location: 'Золотые ворота, СТОЛИЦА',
+  rating: 5.0,
+  reviews: 1872,
+  about: 'Доктор Дэвид Патель, специалист по кардиологии, обладает богатым опытом работы в кардиологическом центре Golden Gate в Голден Гейт, Калифорния. подробнее',
+  workingHours: 'Понедельник-пятница, с 08:00 до 18:00',
+);
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
+// Simulated review data
+final reviews = [
+  Review(
+    reviewerName: 'Emily Anderson',
+    rating: 5.0,
+    reviewText: 'Dr. Patel is a true professional who genuinely cares about his patients. I highly recommend Dr. Patel to anyone seeking excellent cardiac care.',
+  ),
+  // Add more reviews as needed
+];
 
-   Future<void> _showOptionsDialog() async {
-     await showModalBottomSheet(
-       context: context,
-       builder: (BuildContext context) {
-         return Column(
-           mainAxisSize: MainAxisSize.min,
-           children: <Widget>[
-             ListTile(
-               leading: Icon(Icons.photo_library),
-               title: Text('Выберите фото'),
-               onTap: () {
-                 Navigator.pop(context); // Close the modal bottom sheet
-                 getImage(); // Open the image picker
-               },
-             ),
-             ListTile(
-               leading: Icon(Icons.delete),
-               title: Text('Удалить фото'),
-               onTap: () {
-                 setState(() {
-                   _image = null;
-                 });
-                 Navigator.pop(context); // Close the modal bottom sheet
-               },
-             ),
-           ],
-         );
-       },
-     );
-   }
+class DoctorDetailsScreen extends StatelessWidget {
+  final Doctor doctorInfo;
+  final List<Review> reviews;
+
+  DoctorDetailsScreen({required this.doctorInfo, required this.reviews});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () async {},
-          child: SafeArea(
-            top: true,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                child: Column(
-                  children: [
-                    Text("Профиль",style: TextStyle(fontSize: 20),),
-                    SizedBox(height: 25,),
-                    // Profile section (placeholder for image)
-                    Container(
-                      height: 170,
-                      width: 170,
-                      child: Stack(
+      appBar: AppBar(
+        title: Text("Doctor Details"),
+        // Add back button and heart icon as needed
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Doctor Information Section
+              Container(
+                width: 380,
+                height: 120,
+                child: Material(
+                  elevation: 5.0, // Adjust the elevation as needed
+                  shadowColor: Colors.grey, // Adjust the shadow color as needed
+                  borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10,),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                        child: Container(
+                          width: 100, // Adjust the width and height as needed to make it square
+                          height: 100,
+                          child: Image.asset("asset/images/DoctorImage.png"),
+                        ),
+                      ),
+                      SizedBox(width: 18.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: getImage,
-                            child: CircleAvatar(
-                              radius: 80,
-                              backgroundImage: _image != null ? FileImage(_image!) : null,
-                              child: _image == null
-                                  ? Image.asset("asset/images/Vector.png")
-                                  : null,
-                            ),
-                          ),
-                          Positioned(
-                            top: 108,
-                            right: 0,
-                            child: TextButton(
-                              onPressed: _showOptionsDialog,
-                              child: Image.asset('asset/images/pen_icon.png', width: 50, height: 50),
-                            ),
-                          ),
+                          SizedBox(height: 20,),
+                          Text(doctorinfo.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                          Text(doctorinfo.specialization, style: TextStyle(fontSize: 16.0)),
+                          Text(doctorinfo.clinic, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
                         ],
                       ),
-                    ),
-                    // Edit profile button
-
-                    // List items
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        listItemWidget('Favorite', Icons.favorite),
-                        listItemWidget('Notifications', Icons.notifications),
-                        listItemWidget('Settings', Icons.settings),
-                        listItemWidget('Help and Support', Icons.help),
-                        listItemWidget('Terms and Conditions', null), // No icon for terms
-                        listItemWidget('Log Out', Icons.logout),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
+
+
+              SizedBox(height: 20.0),
+
+              // Stats Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Color.fromRGBO(243, 244, 246, 1),
+                        radius: 30,
+                          child: Icon(Icons.people)),
+                      Text('2,000+', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
+                      Text('пациенты',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Color.fromRGBO(243, 244, 246, 1),
+                          radius: 30,
+                          child: Icon(Icons.workspace_premium_sharp)),
+                      Text('10+', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
+                      Text('опыт',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Color.fromRGBO(243, 244, 246, 1),
+                          radius: 30,
+                          child: Icon(Icons.star)),
+                      Text('${doctorinfo.rating}', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
+                      Text('rating',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Color.fromRGBO(243, 244, 246, 1),
+                          radius: 30,
+                          child: Icon(Icons.chat)),
+                      Text('${doctorinfo.reviews}', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
+                      Text('reviews',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                    ],
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 20.0),
+
+              // About Me Section
+              Text('Обо мне ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+              SizedBox(height: 8.0),
+              Text(doctorinfo.about),
+              // Add "View More" functionality if needed
+
+              SizedBox(height: 20.0),
+
+              // Working Time Section
+              Text('Рабочее время ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+              SizedBox(height: 8.0),
+              Text(doctorinfo.workingHours),
+
+              SizedBox(height: 20.0),
+
+              // Reviews Section
+              Text('Обзоры', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+              SizedBox(height: 8.0),
+              // Display reviews (implement as described above)
+
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      Color.fromRGBO(28, 42, 58, 1),
+                    ),
+                    foregroundColor:
+                    MaterialStateProperty.all(Colors.white),
+                    minimumSize: MaterialStateProperty.all(Size(380, 50)),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => DoctorListScreen()));
+                  },
+                  child: Text(
+                    "Запишитесь на прием ",
+                    style: TextStyle(fontSize: 18),
+                  )),
+
+            ],
           ),
         ),
       ),
     );
   }
-}
-
-// Widget to represent each list item
-Widget listItemWidget(String text, IconData? icon) {
-
-  return Row(
-    children: [
-      if (icon != null)
-        Icon(icon),
-      SizedBox(width: 8.0),
-      Text(text),
-      Spacer(),
-      Icon(Icons.chevron_right), // Chevron for navigation
-    ],
-  );
 }

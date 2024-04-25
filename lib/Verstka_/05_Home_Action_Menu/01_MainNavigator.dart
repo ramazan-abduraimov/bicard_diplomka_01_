@@ -20,7 +20,7 @@ class _MainNavigatorState extends State<MainNavigator> {
   Widget build(BuildContext context) {
     List<Widget> screens = [
       HomePage(),
-      MapPage(),
+      DoctorListScreen(),
       Doctors_Appointment(),
       ProfilePage()
     ];
@@ -40,7 +40,7 @@ class _MainNavigatorState extends State<MainNavigator> {
         items: [
           BottomNavigationBarItem(
             icon: Image.asset(
-              "asset/images/Home.png",
+              "asset/images/homeNotifigation.png",
               width: 23.36,
               height: 23.6,
             ),

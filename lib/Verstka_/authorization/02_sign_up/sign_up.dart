@@ -18,7 +18,7 @@ class SignUp extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset("asset/images/Vector.png"),
+                  Image.asset("asset/images/Vector.png",),
                   SizedBox(
                     height: 15,
                   ),
