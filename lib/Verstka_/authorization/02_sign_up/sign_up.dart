@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/HomePage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/02_sign_up/FillYourProfile.dart';
@@ -24,7 +25,7 @@ class _SignUpState extends State<SignUp> {
     String email = _emailController.text;
     String password = _passwordController.text;
     print(name);
-    var url = Uri.parse('http://192.168.159.243:5297/api/Users/register');
+    var url = Uri.parse('http://192.168.50.225:5297/api/Users/register');
     print(url);
     var body = jsonEncode({'userName': name, 'email': email, 'password': password});
     try {
@@ -34,17 +35,17 @@ class _SignUpState extends State<SignUp> {
 
       if (response.statusCode == 200) {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => FillYourProfile(),
+          builder: (BuildContext context) => HomePage(),
         ));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create account')),
+          SnackBar(content: Text('Не удалось создать учетную запись')),
         );
       }
     } catch (e) {
       print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to create account. Please try again later.')),
+        SnackBar(content: Text('Не удалось создать учетную запись. Пожалуйста, повторите попытку позже.')),
       );
     }
   }
@@ -126,9 +127,13 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     onPressed: () {
-                      if(_formKey.currentState!.validate()) {
-                        _createAccount(context);
-                      }
+                      // if(_formKey.currentState!.validate()) {
+                      //   _createAccount(context);
+                      // }
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => HomePage(),
+                      ));
+
                     },
                     child: Text(
                       "Создать аккаунт",
