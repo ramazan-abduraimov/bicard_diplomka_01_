@@ -20,7 +20,7 @@ class _MainNavigatorState extends State<MainNavigator> {
   Widget build(BuildContext context) {
     List<Widget> screens = [
       HomePage(),
-      DoctorListScreen(),
+      MapPage(),
       DoctorsAppointment(),
       ProfilePage()
     ];

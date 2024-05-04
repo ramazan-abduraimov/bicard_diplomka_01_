@@ -20,7 +20,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
 
 
   Future<void> getImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -92,8 +92,8 @@ class _FillYourProfileState extends State<FillYourProfile> {
   }
 
   Widget _buildGenderDropdown(String label, String value) {
-    if (value != "Мужик" && value != "Женщина") {
-      value = "Мужик";
+    if (value != "Мужчина" && value != "Женщина") {
+      value = "Мужчина";
     }
 
     return DropdownButtonFormField<String>(
@@ -109,7 +109,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
           gender = newValue!;
         });
       },
-      items: <String>['Мужик', 'Женщина'].map((String value) {
+      items: <String>['Мужчина', 'Женщина'].map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
@@ -196,7 +196,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
                     ),
                   ),
                   SizedBox(height: 25),
-                  _buildDateTextField("день рождения", date),
+                  _buildDateTextField("День рождения", date),
                   SizedBox(height: 25),
                   _buildGenderDropdown("Gender", gender),
                   SizedBox(height: 55),
@@ -252,8 +252,4 @@ class _FillYourProfileState extends State<FillYourProfile> {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: FillYourProfile(),
-  ));
-}
+

@@ -1,5 +1,5 @@
 
-import 'package:bicard_diplomka_01_/Verstka_/proba.dart';
+import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:flutter/material.dart';
 
 class Hospitalization extends StatelessWidget {
@@ -37,6 +37,15 @@ class Hospitalization extends StatelessWidget {
                         labelText: "Search doctor...",
                         labelStyle:
                         TextStyle(color: Color.fromRGBO(156, 163, 175, 1)))),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15,0, 15),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Врачи, занимающиеся госпитализацией",style: TextStyle(fontSize: 15),),
+                  ),
+                ),
+
                 GestureDetector(
                   onTap: (){
 
