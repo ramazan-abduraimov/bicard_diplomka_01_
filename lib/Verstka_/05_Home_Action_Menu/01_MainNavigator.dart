@@ -21,7 +21,7 @@ class _MainNavigatorState extends State<MainNavigator> {
     List<Widget> screens = [
       HomePage(),
       DoctorListScreen(),
-      Doctors_Appointment(),
+      DoctorsAppointment(),
       ProfilePage()
     ];
     void onItemTap(int index) {
@@ -54,13 +54,14 @@ class _MainNavigatorState extends State<MainNavigator> {
             ),
             label: "Map",
           ),
+
           BottomNavigationBarItem(
             icon: Image.asset(
               "asset/images/Appointment.png",
               width: 23.35,
               height: 23.33,
             ),
-            label: "Shop",
+            label: "Записаться",
           ),
           BottomNavigationBarItem(
             icon: Image.asset(

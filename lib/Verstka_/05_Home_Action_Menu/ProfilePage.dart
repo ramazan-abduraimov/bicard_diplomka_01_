@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bicard_diplomka_01_/Verstka_/authorization/02_sign_up/FillYourProfile.dart';
+import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/FillYourProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

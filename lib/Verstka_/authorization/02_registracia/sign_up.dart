@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/01_MainNavigator.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/HomePage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:bicard_diplomka_01_/Verstka_/authorization/02_sign_up/FillYourProfile.dart';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/04_sign_in/sign_in.dart';
+
 
 class SignUp extends StatefulWidget {
 
@@ -131,7 +132,7 @@ class _SignUpState extends State<SignUp> {
                       //   _createAccount(context);
                       // }
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => HomePage(),
+                        builder: (BuildContext context) => MainNavigator(),
                       ));
 
                     },
@@ -203,3 +204,5 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
+
+

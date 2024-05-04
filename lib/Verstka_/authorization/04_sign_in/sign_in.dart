@@ -1,7 +1,6 @@
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/01_MainNavigator.dart';
+import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/sign_up.dart';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/03_forget_password/forget_password.dart';
-import 'package:bicard_diplomka_01_/Verstka_/authorization/02_sign_up/sign_up.dart';
-import 'package:bicard_diplomka_01_/Verstka_/authorization/02_sign_up/FillYourProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
