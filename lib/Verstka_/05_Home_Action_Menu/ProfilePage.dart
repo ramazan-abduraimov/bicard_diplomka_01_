@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bicard_diplomka_01_/Verstka_/08_Favorites/Favorites.dart';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/FillYourProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +15,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> getImage() async {
     final pickedFile =
-    await ImagePicker().getImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -120,8 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           ));
                         }),
                         listItemWidget('Favorite', Icons.favorite, () {
-                          // Handle Favorite button tap
-                          print('Favorite button tapped');
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => Favorites(),
+                          ));
                         }),
                         listItemWidget('Notifications', Icons.notifications,
                                 () {

@@ -10,12 +10,20 @@ class DateTimePicker extends StatefulWidget {
 }
 
 class _DateTimePickerState extends State<DateTimePicker> {
+  late DateTime selectDate;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    selectDate = DateTime.now();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Center(child: Text("Book Appointment ")),
+        title: const Text("Book Appointment "),
+        centerTitle: true,
       ),
       body: RefreshIndicator(
         onRefresh: () async {},
@@ -26,9 +34,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 15),
               child: Column(
                 children: [
-                  CalendarWidget(),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                  CalendarWidget(onChange: (DateTime value) async{
+                    setState(() {
+                      selectDate = value;
+                    });
+                  },),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -37,16 +49,16 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       ),
                     ),
                   ),
-                  TimePicker(),
-                  SizedBox(height: 25,),
+                  TimePicker(selectDate: selectDate,),
+                  const SizedBox(height: 25,),
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(28, 42, 58, 1),
+                        const Color.fromRGBO(28, 42, 58, 1),
                       ),
                       foregroundColor:
                       MaterialStateProperty.all(Colors.white),
-                      minimumSize: MaterialStateProperty.all(Size(380, 50)),
+                      minimumSize: MaterialStateProperty.all(const Size(380, 50)),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
@@ -56,7 +68,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     onPressed: () {
                       _congratulations(); // Call the function here
                     },
-                    child: Text(
+                    child: const Text(
                       "Подтверить",
                       style: TextStyle(fontSize: 18),
                     ),
@@ -76,7 +88,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(30, 25, 20, 25),
               child: Column(
@@ -84,25 +96,25 @@ class _DateTimePickerState extends State<DateTimePicker> {
                 children: [
 
                   Image.asset("asset/images/gotovo.png",width: 140,height: 140,),
-                  SizedBox(height: 15,),
-                  Text(
+                  const SizedBox(height: 15,),
+                  const Text(
                     "Поздравляю!",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 16.0),
-                  Container(child: Text("Ваша встреча с доктором Дэвидом Пателем назначена на 30 июня 2023 года в 10:00 утра.")),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
+                  Container(child: const Text("Ваша встреча с доктором Дэвидом Пателем назначена на 30 июня 2023 года в 10:00 утра.")),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(28, 42, 58, 1),
+                        const Color.fromRGBO(28, 42, 58, 1),
                       ),
                       foregroundColor:
                       MaterialStateProperty.all(Colors.white),
-                      minimumSize: MaterialStateProperty.all(Size(80, 50)),
+                      minimumSize: MaterialStateProperty.all(const Size(80, 50)),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
@@ -113,7 +125,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       Navigator.of(context).pop();
 
                     },
-                    child: Text(
+                    child: const Text(
                       "Сделано",
                       style: TextStyle(fontSize: 18),
                     ),),
