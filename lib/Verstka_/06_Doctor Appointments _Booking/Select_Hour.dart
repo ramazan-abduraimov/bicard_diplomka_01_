@@ -47,8 +47,10 @@ class _TimePickerState extends State<TimePicker> {
     var queryParams = {
       'currentDay':
           '${DateFormat("yyyy-MM-dd").format(widget.selectDate)}T00:00:00Z',
-      'doctorId': '1'
+      'doctorId': '2',
+
     };
+    print(queryParams);
     var uri = Uri.parse(url).replace(queryParameters: queryParams);
     try {
       var response = await http.post(uri, headers: {
@@ -76,6 +78,7 @@ class _TimePickerState extends State<TimePicker> {
     return null;
   }
 }
+
 
 class SlotsWidgets extends StatefulWidget {
   final List<Timeslots> listSlot;
