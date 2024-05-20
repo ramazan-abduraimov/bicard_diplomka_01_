@@ -1,15 +1,13 @@
-import 'package:bicard_diplomka_01_/Verstka_/05_Category_/Cardiology.dart';
-import 'package:bicard_diplomka_01_/Verstka_/05_Category_/Hospitalization.dart';
-import 'package:bicard_diplomka_01_/Verstka_/05_Category_/Microsurgery.dart';
-import 'package:bicard_diplomka_01_/Verstka_/05_Category_/Surgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Cardiology.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Hospitalization.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Microsurgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Surgery.dart';
+import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,17 +15,26 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+class DoctorDoc {
+  final String name;
+  final String specialization;
+  final String clinic;
+
+
+  DoctorDoc({
+    required this.name,
+    required this.specialization,
+    required this.clinic,
+
+  });
+}
+final doctorsinfo = DoctorDoc(
+  name: 'Дэвид Патель',
+  specialization: 'Кардиолог',
+  clinic: 'Золотой кардиологический центр',
+);
 
 class _HomePageState extends State<HomePage> {
-  String selectedLocation = 'Bishkek, Kyrgyzstan';
-
-  List<String> locations = [
-    'Bishkek, Kyrgyzstan',
-    'Москва',
-    'Париж',
-    'Нью-Йорк'
-  ];
-
   double FotoSize = 85;
   void _navigateToDetailPage(BuildContext context, int index) {
     // Depending on the index, navigate to different detail pages
@@ -61,30 +68,11 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      "asset/images/lokation.png",
-                      width: 20,
-                      height: 20,
-                    ),
+                   Icon(Icons.favorite,color: Colors.red,),
                     SizedBox(
                       width: 10,
                     ),
-                    DropdownButton<String>(
-                      value: selectedLocation,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedLocation = newValue!;
-                        });
-                      },
-                      items: locations
-                          .map<DropdownMenuItem<String>>(
-                              (String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                    ),
+                   Text("Bicard",style: TextStyle(fontSize: 18),),
                     const Spacer(),
                     GestureDetector(
                       onTap: () {},
@@ -185,145 +173,124 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 SizedBox(height: 15,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => Hospitalization(),
-                            ));
-                          },
-                          child: Container(
-                            width: FotoSize,
-                            height: FotoSize,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.white, width: 2.0), // Border details
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Image.asset("asset/images/hospitalLogo.png"),
-                          ),
-                        ),
-                        Text(
-                          'Госпит.. ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => Cardiology(),
-                            ));
-                          },
-                          child: Container(
-                            width: FotoSize,
-                            height: FotoSize,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.white, width: 2.0), // Border details
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Image.asset("asset/images/Cardiology.png"),
-                          ),
-                        ),
-                        Text(
-                          'Кардиолог..',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => Microsurgery(),
-                            ));
-                          },
+                ButtonList(),
+                SizedBox(height: 20,),
+                GestureDetector(
+                  onTap: (){
 
-                          child: Container(
-                            width: FotoSize,
-                            height: FotoSize,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.white, width: 2.0), // Border details
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Image.asset("asset/images/micro_hirurgiya.png"),
-                          ),
-                        ),
-                        Text(
-                          'Микрохир..',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => Surege(),
-                            ));
-                          },
-                          child: Container(
-                            width: FotoSize,
-                            height: FotoSize,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.white, width: 2.0), // Border details
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Image.asset("asset/images/hirurgia.png"),
-                          ),
-                        ),
-                        Text(
-                          'Хирургия',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text("Последние новости",style: TextStyle(fontSize: 15),),
-                  ),
-                ),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>DoctorDetailsScreen(doctorInfo: doctorinfo, reviews: reviews, ),));
+                  },
+                  child:  Container(
+                    width: 380,
+                    height: 120,
+                    child: Material(
+                      elevation: 5.0, // Adjust the elevation as needed
+                      shadowColor: Colors.grey, // Adjust the shadow color as needed
+                      borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                      child: Row(
 
-                Container(
-                  height: 200, // Set a height for the container
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Row(
-                        children: List.generate(
-                          10,
-                              (index) => Container(
-                            width: 350,
-                            height: 200,
-                            margin: EdgeInsets.all(8),
-                            color: Colors.primaries[index % Colors.primaries.length],
-                            child: Center(child: Text('Item ${index + 1}')),
+                        children: [
+                          SizedBox(width: 10,),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                            child: Container(
+                              width: 100, // Adjust the width and height as needed to make it square
+                              height: 100,
+                              child: Image.asset("asset/images/DoctorImage.png"),
+                            ),
                           ),
-                        ),
+                          SizedBox(width: 18.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20,),
+                              Row(
+                                children: [
+                                  Text(doctorsinfo.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                                  Icon(Icons.favorite_outline,size: 35,),
+                                ],
+                              ),
+                              Text(doctorsinfo.specialization, style: TextStyle(fontSize: 16.0)),
+                              Text(doctorsinfo.clinic, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                            ],
+                          ),
+
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonList extends StatefulWidget {
+  @override
+  _ButtonListState createState() => _ButtonListState();
+}
+
+class _ButtonListState extends State<ButtonList> {
+  int _selectedIndex = 0;
+
+  void _onButtonPressed(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          _buildButton(0, "All"),
+          SizedBox(width: 15),
+          _buildButton(1, "General"),
+          SizedBox(width: 15),
+          _buildButton(2, "Cardiologist"),
+          SizedBox(width: 15),
+          _buildButton(3, "Dentist"),
+          SizedBox(width: 15),
+          _buildButton(4, "Hirurg"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButton(int index, String text) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: GestureDetector(
+        onTap: () => _onButtonPressed(index),
+        child: Container(
+          width: 100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            border: Border.all(color: Colors.black54),
+            color: _selectedIndex == index ? Color.fromRGBO(28, 42, 58, 1) : Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(1, 1),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 15, color: _selectedIndex == index ? Colors.white : Colors.black),
             ),
           ),
         ),

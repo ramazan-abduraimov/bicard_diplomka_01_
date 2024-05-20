@@ -43,7 +43,7 @@ class _TimePickerState extends State<TimePicker> {
   }
 
   Future<GetTimesModels?> getDoctorAppointment() async {
-    var url = 'http://192.168.50.225:5297/api/Appointments/GetTimeSlots';
+    var url = 'http://192.168.0.104:5297/api/Appointments/GetTimeSlots';
     var queryParams = {
       'currentDay':
           '${DateFormat("yyyy-MM-dd").format(widget.selectDate)}T00:00:00Z',

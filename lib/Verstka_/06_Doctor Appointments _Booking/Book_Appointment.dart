@@ -59,6 +59,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     ),
                   ),
                   TimePicker(selectDate: selectDate),
+
                   const SizedBox(height: 25),
                   ElevatedButton(
                     style: ButtonStyle(
@@ -92,16 +93,19 @@ class _DateTimePickerState extends State<DateTimePicker> {
   }
 
   Future<void> _submitAppointment() async {
-    final url = Uri.parse('https://192.168.50.225:5297/api/Appointments/Create');
+    final url = Uri.parse('http://192.168.0.104:5297/api/Appointments/Create');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
-      'name': name,
-      'email': email,
-      'phoneNumber': phoneNumber,
-      'age': age,
+      "name": "string",
+      "email": "string",
+      "phoneNumber": "string",
+      "age": "string",
       'date': selectDate.toIso8601String(),
-      'DoctorID': 2,
+      "doctorId": 2
+
+    //  'DoctorID': 2,
     });
+    print(body);
 
     try {
       final response = await http.post(url, headers: headers, body: body);

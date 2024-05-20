@@ -37,7 +37,7 @@ class Review {
 
 // Simulated doctor data
 final doctorinfo = Doctor(
-  name: 'Доктор Дэвид Патель',
+  name: 'Док Дэвид Патель',
   specialization: 'Кардиолог',
   clinic: 'Золотой кардиологический центр',
   location: 'Золотые ворота, СТОЛИЦА',
