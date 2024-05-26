@@ -1,37 +1,36 @@
-import 'dart:convert';
-
+import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/get_timetable_slots_model.dart';
+import 'package:bicard_diplomka_01_/providers/calendar_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class TimePicker extends StatefulWidget {
-  final DateTime selectDate;
-
   const TimePicker({
     Key? key,
-    required this.selectDate,
   }) : super(key: key);
 
   @override
-  _TimePickerState createState() => _TimePickerState();
+  State<TimePicker> createState() => _TimePickerState();
 }
 
 class _TimePickerState extends State<TimePicker> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<CalendarProvider>();
+    final DateTime? selectDate = state.selectDate;
     return FutureBuilder(
-        future: getDoctorAppointment(),
+        future: ApiService()
+            .getDoctorAppointment(selectDate: selectDate ?? DateTime.now()),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SlotsWidgets(listSlot: snapshot.data!.timeslots!);
           } else if (snapshot.hasError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text(
+                      'Не удалось создать учетную запись. Пожалуйста, повторите попытку позже.')),
+            );
             return Center(
               child: Text(snapshot.error.toString()),
             );
@@ -41,44 +40,7 @@ class _TimePickerState extends State<TimePicker> {
           return const Text("Подождите");
         });
   }
-
-  Future<GetTimesModels?> getDoctorAppointment() async {
-    var url = 'http://192.168.0.104:5297/api/Appointments/GetTimeSlots';
-    var queryParams = {
-      'currentDay':
-          '${DateFormat("yyyy-MM-dd").format(widget.selectDate)}T00:00:00Z',
-      'doctorId': '2',
-
-    };
-    print(queryParams);
-    var uri = Uri.parse(url).replace(queryParameters: queryParams);
-    try {
-      var response = await http.post(uri, headers: {
-        'Content-Type': 'application/json',
-        'accept': '*/*',
-      });
-      print(response.body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        GetTimesModels? getTimesModels =
-            GetTimesModels.fromJson(jsonDecode(response.body));
-        return getTimesModels;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${response.statusCode} -- ')),
-        );
-      }
-    } catch (e) {
-      print('Error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Не удалось создать учетную запись. Пожалуйста, повторите попытку позже.')),
-      );
-    }
-    return null;
-  }
 }
-
 
 class SlotsWidgets extends StatefulWidget {
   final List<Timeslots> listSlot;
@@ -90,7 +52,6 @@ class SlotsWidgets extends StatefulWidget {
 }
 
 class _SlotsWidgetsState extends State<SlotsWidgets> {
-  Timeslots? _selectedSlot;
 
   @override
   Widget build(BuildContext context) {
@@ -102,25 +63,27 @@ class _SlotsWidgetsState extends State<SlotsWidgets> {
   }
 
   List<Widget> _generateTimeButtons() {
-    return widget.listSlot.map((time) {
+    final CalendarProvider state = context.watch<CalendarProvider>();
+    return widget.listSlot.map((Timeslots? time) {
       return ElevatedButton(
-        onPressed: time.status == "booked"
+        onPressed: time?.status == "booked"
             ? null
             : () {
-                setState(() {
-                  _selectedSlot = time;
-                });
+                // setState(() {
+                //   _selectedSlot = time;
+                // });
+                  state.setTime(time!);
               },
         style: ElevatedButton.styleFrom(
-          backgroundColor: _selectedSlot == time
+          backgroundColor: state.time?.time == time?.time
               ? const Color.fromRGBO(28, 42, 58, 1)
               : const Color.fromRGBO(249, 250, 251, 1),
           // Add more styling as needed
         ),
         child: Text(
-          time.time ?? "9:00",
+          time?.time.toString() ?? "9:00",
           style: TextStyle(
-            color: _selectedSlot == time ? Colors.white : Colors.black,
+            color: state.time?.time == time?.time ? Colors.white : Colors.black,
             // Add more styling as needed
           ),
         ),

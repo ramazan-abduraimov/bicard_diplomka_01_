@@ -1,13 +1,13 @@
+import 'dart:convert';
+
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Cardiology.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Hospitalization.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Microsurgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Surgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/widgets.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -175,54 +175,8 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 15,),
                 ButtonList(),
                 SizedBox(height: 20,),
-                GestureDetector(
-                  onTap: (){
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>DoctorDetailsScreen(doctorInfo: doctorinfo, reviews: reviews, ),));
-                  },
-                  child:  Container(
-                    width: 380,
-                    height: 120,
-                    child: Material(
-                      elevation: 5.0, // Adjust the elevation as needed
-                      shadowColor: Colors.grey, // Adjust the shadow color as needed
-                      borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
-                      child: Row(
 
-                        children: [
-                          SizedBox(width: 10,),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
-                            child: Container(
-                              width: 100, // Adjust the width and height as needed to make it square
-                              height: 100,
-                              child: Image.asset("asset/images/DoctorImage.png"),
-                            ),
-                          ),
-                          SizedBox(width: 18.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 20,),
-                              Row(
-                                children: [
-                                  Text(doctorsinfo.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
-                                  Icon(Icons.favorite_outline,size: 35,),
-                                ],
-                              ),
-                              Text(doctorsinfo.specialization, style: TextStyle(fontSize: 16.0)),
-                              Text(doctorsinfo.clinic, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
-                            ],
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -240,30 +194,76 @@ class ButtonList extends StatefulWidget {
 class _ButtonListState extends State<ButtonList> {
   int _selectedIndex = 0;
 
+
   void _onButtonPressed(int index) {
+    if(index == 0) {
+      _fetchDoctorsList();
+    }
     setState(() {
       _selectedIndex = index;
+
     });
+
+
   }
+
+  Future<void> _fetchDoctorsList() async {
+    try {
+
+      var url = 'http://192.168.50.225:5297/api/Doctors/GetListOfDoctors';
+      var uri = Uri.parse(url);
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        // Обработка успешного ответа, парсинг данных, если нужно
+        final data = jsonDecode(response.body);
+        print(data);
+        // Делайте что-то с данными
+      } else {
+        // Обработка других кодов состояния, например, вывод сообщения об ошибке
+        print('Failed to fetch doctors list: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Обработка сетевых ошибок
+      print('Error fetching doctors list: $error');
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50.0,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          _buildButton(0, "All"),
-          SizedBox(width: 15),
-          _buildButton(1, "General"),
-          SizedBox(width: 15),
-          _buildButton(2, "Cardiologist"),
-          SizedBox(width: 15),
-          _buildButton(3, "Dentist"),
-          SizedBox(width: 15),
-          _buildButton(4, "Hirurg"),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          height: 50.0,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              _buildButton(0, "All"),
+              SizedBox(width: 15),
+              _buildButton(1, "HOSPITALIZATION"),
+              SizedBox(width: 15),
+              _buildButton(2, "CARDIOLOGY"),
+              SizedBox(width: 15),
+              _buildButton(3, "MICROSURGERY"),
+              SizedBox(width: 15),
+              _buildButton(4, "SURGERY"),
+            ],
+          ),
+        ),
+        SizedBox(height: 20,),
+        _selectedIndex == 0
+            ? All()
+            : _selectedIndex == 1
+            ? HOSPITALIZATION()
+            : _selectedIndex == 2
+            ? CARDIOLOGY()
+            : _selectedIndex == 3
+            ? MICROSURGERY()
+            : _selectedIndex == 4
+            ? SURGERY()
+            : SizedBox(),
+      ],
     );
   }
 
@@ -273,7 +273,7 @@ class _ButtonListState extends State<ButtonList> {
       child: GestureDetector(
         onTap: () => _onButtonPressed(index),
         child: Container(
-          width: 100,
+          width: 150,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             border: Border.all(color: Colors.black54),
@@ -293,6 +293,389 @@ class _ButtonListState extends State<ButtonList> {
               style: TextStyle(fontSize: 15, color: _selectedIndex == index ? Colors.white : Colors.black),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class All extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>DoctorDetailsScreen(doctorInfo: doctorinfo, reviews: reviews, ),));
+      },
+      child:  Container(
+        width: 380,
+        height: 120,
+        child: Material(
+          elevation: 5.0, // Adjust the elevation as needed
+          shadowColor: Colors.grey, // Adjust the shadow color as needed
+          borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+          child: Row(
+
+            children: [
+              SizedBox(width: 10,),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                child: Container(
+                  width: 100, // Adjust the width and height as needed to make it square
+                  height: 100,
+                  child: Image.asset("asset/images/DoctorImage.png"),
+                ),
+              ),
+              SizedBox(width: 18.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(doctorsinfo.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                      GestureDetector(child: Icon(Icons.favorite_outline,size: 35,)),
+                    ],
+                  ),
+                  Text(doctorsinfo.specialization, style: TextStyle(fontSize: 16.0)),
+                  Text(doctorsinfo.clinic, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                ],
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+class HOSPITALIZATION extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+
+      // Customize your container here
+      width: 342,
+      height: 250,
+      margin: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.green[100], //.fromRGBO(243, 244, 246, 1),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>DoctorDetailsScreen(doctorInfo: doctorinfo, reviews: reviews, ),));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              ' May 22, 2023 - 10.00 AM',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              height: 130,
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey.shade400),top: BorderSide(color: Colors.grey.shade400)),
+              ),
+              child: Row(children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                  child: Container(
+                    width: 100, // Adjust the width and height as needed to make it square
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.white, width: 2.0), // Border details
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Image.asset("asset/images/DoctorImage.png"),
+                  ),
+                ),
+                SizedBox(width: 18.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20,),
+                    Text("Dr. James Robinson", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                    Text("Orthopedic Surgery", style: TextStyle(fontSize: 16.0)),
+                    Text("Elite Ortho Clinic, USA", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                  ],
+                ),
+              ],
+              ),
+            ),
+            Text("позвоните, чтобы отменить или перенести дату",style: TextStyle(fontSize: 16.0)),
+
+            // Add more appointment details as needed
+          ],
+        ),
+      ),
+    );
+  }
+}
+class CARDIOLOGY extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+
+      // Customize your container here
+      width: 342,
+      height: 250,
+      margin: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.green[100], //.fromRGBO(243, 244, 246, 1),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>DoctorDetailsScreen(doctorInfo: doctorinfo, reviews: reviews, ),));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              ' May 22, 2023 - 10.00 AM',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              height: 130,
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey.shade400),top: BorderSide(color: Colors.grey.shade400)),
+              ),
+              child: Row(children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                  child: Container(
+                    width: 100, // Adjust the width and height as needed to make it square
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.white, width: 2.0), // Border details
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Image.asset("asset/images/DoctorImage.png"),
+                  ),
+                ),
+                SizedBox(width: 18.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20,),
+                    Text("Dr. James Robinson", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                    Text("Orthopedic Surgery", style: TextStyle(fontSize: 16.0)),
+                    Text("Elite Ortho Clinic, USA", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                  ],
+                ),
+              ],
+              ),
+            ),
+            Text("позвоните, чтобы отменить или перенести дату",style: TextStyle(fontSize: 16.0)),
+
+            // Add more appointment details as needed
+          ],
+        ),
+      ),
+    );
+  }
+}
+class  MICROSURGERY extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+
+      // Customize your container here
+      width: 342,
+      height: 250,
+      margin: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.green[100], //.fromRGBO(243, 244, 246, 1),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>DoctorDetailsScreen(doctorInfo: doctorinfo, reviews: reviews, ),));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              ' May 22, 2023 - 10.00 AM',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              height: 130,
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey.shade400),top: BorderSide(color: Colors.grey.shade400)),
+              ),
+              child: Row(children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                  child: Container(
+                    width: 100, // Adjust the width and height as needed to make it square
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.white, width: 2.0), // Border details
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Image.asset("asset/images/DoctorImage.png"),
+                  ),
+                ),
+                SizedBox(width: 18.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20,),
+                    Text("Dr. James Robinson", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                    Text("Orthopedic Surgery", style: TextStyle(fontSize: 16.0)),
+                    Text("Elite Ortho Clinic, USA", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                  ],
+                ),
+              ],
+              ),
+            ),
+            Text("позвоните, чтобы отменить или перенести дату",style: TextStyle(fontSize: 16.0)),
+
+            // Add more appointment details as needed
+          ],
+        ),
+      ),
+    );
+  }
+}
+class SURGERY extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+
+      // Customize your container here
+      width: 342,
+      height: 250,
+      margin: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.green[100], //.fromRGBO(243, 244, 246, 1),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>DoctorDetailsScreen(doctorInfo: doctorinfo, reviews: reviews, ),));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              ' May 22, 2023 - 10.00 AM',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              height: 130,
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey.shade400),top: BorderSide(color: Colors.grey.shade400)),
+              ),
+              child: Row(children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                  child: Container(
+                    width: 100, // Adjust the width and height as needed to make it square
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.white, width: 2.0), // Border details
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Image.asset("asset/images/DoctorImage.png"),
+                  ),
+                ),
+                SizedBox(width: 18.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20,),
+                    Text("Dr. James Robinson", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                    Text("Orthopedic Surgery", style: TextStyle(fontSize: 16.0)),
+                    Text("Elite Ortho Clinic, USA", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                  ],
+                ),
+              ],
+              ),
+            ),
+            Text("позвоните, чтобы отменить или перенести дату",style: TextStyle(fontSize: 16.0)),
+
+            // Add more appointment details as needed
+          ],
         ),
       ),
     );

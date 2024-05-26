@@ -1,8 +1,9 @@
+import 'package:bicard_diplomka_01_/api_service/api_service.dart';
+import 'package:bicard_diplomka_01_/providers/calendar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Select_Hour.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/calendar_widget.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:provider/provider.dart';
 
 class DateTimePicker extends StatefulWidget {
   const DateTimePicker({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class DateTimePicker extends StatefulWidget {
 }
 
 class _DateTimePickerState extends State<DateTimePicker> {
-  late DateTime selectDate;
+  late DateTime _selectDate;
   final String name = "John Doe";
   final String email = "johndoe@example.com";
   final String phoneNumber = "123-456-7890";
@@ -22,7 +23,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   void initState() {
     super.initState();
-    selectDate = DateTime.now();
+    _selectDate = DateTime.now();
   }
 
   @override
@@ -44,7 +45,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   CalendarWidget(
                     onChange: (DateTime value) async {
                       setState(() {
-                        selectDate = value;
+                        _selectDate = value;
+                        context
+                            .read<CalendarProvider>()
+                            .setSelectDate(_selectDate);
                       });
                     },
                   ),
@@ -58,8 +62,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       ),
                     ),
                   ),
-                  TimePicker(selectDate: selectDate),
-
+                  const TimePicker(),
                   const SizedBox(height: 25),
                   ElevatedButton(
                     style: ButtonStyle(
@@ -67,7 +70,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         const Color.fromRGBO(28, 42, 58, 1),
                       ),
                       foregroundColor: MaterialStateProperty.all(Colors.white),
-                      minimumSize: MaterialStateProperty.all(const Size(380, 50)),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(380, 50)),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
@@ -75,7 +79,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       ),
                     ),
                     onPressed: () async {
-                      await _submitAppointment();
+                      await ApiService().submitAppointment(
+                          selectDate:
+                              context.read<CalendarProvider>().selectDate ??
+                                  DateTime.now(),
+                          time: context.read<CalendarProvider>().time?.time ??
+                              "09:00");
                       _congratulations();
                     },
                     child: const Text(
@@ -92,35 +101,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
     );
   }
 
-  Future<void> _submitAppointment() async {
-    final url = Uri.parse('http://192.168.0.104:5297/api/Appointments/Create');
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({
-      "name": "string",
-      "email": "string",
-      "phoneNumber": "string",
-      "age": "string",
-      'date': selectDate.toIso8601String(),
-      "doctorId": 2
-
-    //  'DoctorID': 2,
-    });
-    print(body);
-
-    try {
-      final response = await http.post(url, headers: headers, body: body);
-      if (response.statusCode == 200) {
-        // Handle success
-        print('Appointment created successfully');
-      } else {
-        // Handle error
-        print('Failed to create appointment: ${response.body}');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
   Future<void> _congratulations() async {
     await showDialog(
       context: context,
@@ -133,7 +113,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset("asset/images/gotovo.png", width: 140, height: 140),
+                  Image.asset("asset/images/gotovo.png",
+                      width: 140, height: 140),
                   const SizedBox(height: 15),
                   const Text(
                     "Поздравляю!",
@@ -144,8 +125,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   ),
                   const SizedBox(height: 16.0),
                   Container(
-                    child: const Text(
-                      "Ваша встреча с доктором Дэвидом Пателем назначена на 30 июня 2023 года в 10:00 утра.",
+                    child: Text(
+                      "Ваша встреча с доктором Дэвидом Пателем назначена на "
+                          "\n${context.read<CalendarProvider>().getDate()} ${context.read<CalendarProvider>().time?.time}.",
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -155,7 +138,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         const Color.fromRGBO(28, 42, 58, 1),
                       ),
                       foregroundColor: MaterialStateProperty.all(Colors.white),
-                      minimumSize: MaterialStateProperty.all(const Size(80, 50)),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(80, 50)),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
