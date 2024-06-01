@@ -26,13 +26,13 @@ class DoctorModel {
 
   DoctorModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
-    speciality = json['speciality'];
+    name = json['name'];//keerek
+    speciality = json['speciality']; //kerek
     bio = json['bio'];
     education = json['education'];
     experience = json['experience'];
-    pathToPhoto = json['pathToPhoto'];
-    phoneNumber = json['phoneNumber'];
+    pathToPhoto = json['pathToPhoto'];//kerek
+    phoneNumber = json['phoneNumber'];//kerek
     email = json['email'];
     address = json['address'];
     userId = json['userId'];

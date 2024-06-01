@@ -25,7 +25,7 @@ class _SignUpState extends State<SignUp> {
     String email = _emailController.text;
     String password = _passwordController.text;
     print(name);
-    var url = Uri.parse('http://192.168.10.243:5297/api/Users/register');
+    var url = Uri.parse('http://192.168.50.226:5297/api/Users/register');
     print(url);
     var body = jsonEncode({'userName': name, 'email': email, 'password': password});
     try {
@@ -34,7 +34,7 @@ class _SignUpState extends State<SignUp> {
       });
       print(response.body);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201 )  {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => MainNavigator(),
         ));

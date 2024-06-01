@@ -43,7 +43,8 @@ final doctorinfo = Doctor(
   location: 'Золотые ворота, СТОЛИЦА',
   rating: 5.0,
   reviews: 1872,
-  about: 'Доктор Дэвид Патель, специалист по кардиологии, обладает богатым опытом работы в кардиологическом центре Golden Gate в Голден Гейт, Калифорния. подробнее',
+  about:
+      'Доктор Дэвид Патель, специалист по кардиологии, обладает богатым опытом работы в кардиологическом центре Golden Gate в Голден Гейт, Калифорния. подробнее',
   workingHours: 'Понедельник-пятница, с 08:00 до 18:00',
 );
 
@@ -52,17 +53,23 @@ final reviews = [
   Review(
     reviewerName: 'Emily Anderson',
     rating: 5.0,
-    reviewText: 'Dr. Patel is a true professional who genuinely cares about his patients. I highly recommend Dr. Patel to anyone seeking excellent cardiac care.',
+    reviewText:
+        'Dr. Patel is a true professional who genuinely cares about his patients. I highly recommend Dr. Patel to anyone seeking excellent cardiac care.',
   ),
   // Add more reviews as needed
 ];
 
-class DoctorDetailsScreen extends StatelessWidget {
+class DoctorDetailsScreen extends StatefulWidget {
   final Doctor doctorInfo;
   final List<Review> reviews;
 
   DoctorDetailsScreen({required this.doctorInfo, required this.reviews});
 
+  @override
+  State<DoctorDetailsScreen> createState() => _DoctorDetailsScreenState();
+}
+
+class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,16 +88,23 @@ class DoctorDetailsScreen extends StatelessWidget {
                 width: 380,
                 height: 120,
                 child: Material(
-                  elevation: 5.0, // Adjust the elevation as needed
-                  shadowColor: Colors.grey, // Adjust the shadow color as needed
-                  borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                  elevation: 5.0,
+                  // Adjust the elevation as needed
+                  shadowColor: Colors.grey,
+                  // Adjust the shadow color as needed
+                  borderRadius: BorderRadius.circular(10),
+                  // Adjust the border radius as needed
                   child: Row(
                     children: [
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                        borderRadius: BorderRadius.circular(10),
+                        // Adjust the border radius as needed
                         child: Container(
-                          width: 100, // Adjust the width and height as needed to make it square
+                          width: 100,
+                          // Adjust the width and height as needed to make it square
                           height: 100,
                           child: Image.asset("asset/images/DoctorImage.png"),
                         ),
@@ -99,17 +113,23 @@ class DoctorDetailsScreen extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 20,),
-                          Text(doctorinfo.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
-                          Text(doctorinfo.specialization, style: TextStyle(fontSize: 16.0)),
-                          Text(doctorinfo.clinic, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(doctorinfo.name,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20.0)),
+                          Text(doctorinfo.specialization,
+                              style: TextStyle(fontSize: 16.0)),
+                          Text(doctorinfo.clinic,
+                              style: TextStyle(
+                                  fontSize: 14.0, color: Colors.grey)),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-
 
               SizedBox(height: 20.0),
 
@@ -123,8 +143,14 @@ class DoctorDetailsScreen extends StatelessWidget {
                           backgroundColor: Color.fromRGBO(243, 244, 246, 1),
                           radius: 30,
                           child: Icon(Icons.people)),
-                      Text('2,000+', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
-                      Text('пациенты',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                      Text('2,000+',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(
+                        'пациенты',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
                     ],
                   ),
                   Column(
@@ -133,8 +159,14 @@ class DoctorDetailsScreen extends StatelessWidget {
                           backgroundColor: Color.fromRGBO(243, 244, 246, 1),
                           radius: 30,
                           child: Icon(Icons.workspace_premium_sharp)),
-                      Text('10+', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
-                      Text('опыт',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                      Text('10+',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(
+                        'опыт',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                     ],
                   ),
                   Column(
@@ -143,8 +175,14 @@ class DoctorDetailsScreen extends StatelessWidget {
                           backgroundColor: Color.fromRGBO(243, 244, 246, 1),
                           radius: 30,
                           child: Icon(Icons.star)),
-                      Text('${doctorinfo.rating}', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
-                      Text('rating',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                      Text('${doctorinfo.rating}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(
+                        'rating',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
                     ],
                   ),
                   Column(
@@ -153,8 +191,14 @@ class DoctorDetailsScreen extends StatelessWidget {
                           backgroundColor: Color.fromRGBO(243, 244, 246, 1),
                           radius: 30,
                           child: Icon(Icons.chat)),
-                      Text('${doctorinfo.reviews}', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
-                      Text('reviews',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                      Text('${doctorinfo.reviews}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(
+                        'reviews',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
                     ],
                   ),
                 ],
@@ -163,7 +207,9 @@ class DoctorDetailsScreen extends StatelessWidget {
               SizedBox(height: 20.0),
 
               // About Me Section
-              Text('Обо мне ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+              Text('Обо мне ',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
               SizedBox(height: 8.0),
               Text(doctorinfo.about),
               // Add "View More" functionality if needed
@@ -171,43 +217,46 @@ class DoctorDetailsScreen extends StatelessWidget {
               SizedBox(height: 20.0),
 
               // Working Time Section
-              Text('Рабочее время ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+              Text('Рабочее время ',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
               SizedBox(height: 8.0),
               Text(doctorinfo.workingHours),
 
               SizedBox(height: 20.0),
 
               // Reviews Section
-              Text('Обзоры', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+              Text('Обзоры',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
               SizedBox(height: 8.0),
               // Display reviews (implement as described above)
 
               SizedBox(height: 20.0),
               ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Color.fromRGBO(28, 42, 58, 1),
-                    ),
-                    foregroundColor:
-                    MaterialStateProperty.all(Colors.white),
-                    minimumSize: MaterialStateProperty.all(Size(380, 50)),
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Color.fromRGBO(28, 42, 58, 1),
+                  ),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  minimumSize: MaterialStateProperty.all(Size(380, 50)),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DateTimePicker()));
-                  },
-                  child: Text(
-                    "Запишитесь на прием ",
-                    style: TextStyle(fontSize: 18),
-                  ),),
-
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DateTimePicker()));
+                },
+                child: Text(
+                  "Запишитесь на прием ",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
             ],
           ),
         ),
