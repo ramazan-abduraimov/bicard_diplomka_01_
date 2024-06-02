@@ -14,19 +14,17 @@ class ApiService {
   static const String IPAdres = "http://192.168.50.226:5297";
 
   Future<GetTimesModels?> getDoctorAppointment(
-      {required DateTime selectDate}) async {
+      {required DateTime selectDate, required int id}) async {
     var url = '$IPAdres/api/Schedules/GetTimeSlots';
     var queryParams = {
       'currentDay': '${DateFormat("yyyy-MM-dd").format(selectDate)}T00:00:00Z',
-      'doctorId': '2',
+      'doctorId': '$id',
     };
-    print(queryParams);
     var uri = Uri.parse(url).replace(queryParameters: queryParams);
     var response = await http.post(uri, headers: {
       'Content-Type': 'application/json',
       'accept': '*/*',
     });
-    print(response.statusCode);
     if (response.statusCode == 200 || response.statusCode == 201) {
       GetTimesModels? getTimesModels =
           GetTimesModels.fromJson(jsonDecode(response.body));
@@ -36,16 +34,19 @@ class ApiService {
   }
 
   Future<void> submitAppointment(
-      {required DateTime selectDate, required String time}) async {
+      {required DateTime selectDate,
+      required String time,
+      required int id}) async {
+    print(id);
     final url = Uri.parse('$IPAdres/api/Appointments/Create');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
-      "name": "string",
+      "name": "Asan",
       "email": "string",
       "phoneNumber": "string",
       "age": "string",
       'date': '${DateFormat("yyyy-MM-dd").format(selectDate)}T$time:00Z',
-      "doctorId": 2
+      "doctorId": id,
 
       //  'DoctorID': 2,
     });
@@ -68,7 +69,8 @@ class ApiService {
   Future<List<DoctorModel>> fetchDoctorsList() async {
     try {
       var url = 'http://192.168.50.226:5297/api/Doctors/GetListOfDoctors';
-      var uri = Uri.parse(url).replace(queryParameters: {'speciality': ''});;
+      var uri = Uri.parse(url).replace(queryParameters: {'speciality': ''});
+      ;
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         // Обработка успешного ответа, парсинг данных, если нужно
@@ -96,8 +98,6 @@ class ApiService {
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
-
-
         // Обработка успешного ответа, парсинг данных
         final data = jsonDecode(response.body);
         print(data);
@@ -179,10 +179,14 @@ class ApiService {
       throw 'Error fetching doctors list: $error';
     }
   }
-  Future<List<DoctorModel>> InfoDoctorsList(BuildContext context,int doctorId) async {
+
+  Future<List<DoctorModel>> InfoDoctorsList(
+      BuildContext context, int doctorId) async {
     try {
       var url = 'http://192.168.50.226:5297/api/Doctors/GetDoctorById';
-      var uri = Uri.parse(url).replace(queryParameters: {'speciality': '$doctorId'});;
+      var uri =
+          Uri.parse(url).replace(queryParameters: {'speciality': '$doctorId'});
+      ;
       final response = await http.get(uri);
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.push(
@@ -207,6 +211,29 @@ class ApiService {
     } catch (error) {
       // Обработка сетевых ошибок
       throw 'Error fetching doctors list: $error';
+    }
+  }
+
+  Future<void> sendDoctorId(String doctorId) async {
+    final url = Uri.parse(
+        'http://192.168.50.226:5297/api/Doctors/GetDoctorById?id=$doctorId');
+    print("${doctorId}");
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Handle success response
+        print('Request successful');
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network error
+      print('Request failed with error: $e');
     }
   }
 }

@@ -5,12 +5,13 @@ class GetTimesModels {
   String? endTime;
   List<Timeslots>? timeslots;
 
-  GetTimesModels(
-      {this.date,
-        this.dayOfWeek,
-        this.startTime,
-        this.endTime,
-        this.timeslots});
+  GetTimesModels({
+    this.date,
+    this.dayOfWeek,
+    this.startTime,
+    this.endTime,
+    this.timeslots,
+  });
 
   GetTimesModels.fromJson(Map<String, dynamic> json) {
     date = json['date'];

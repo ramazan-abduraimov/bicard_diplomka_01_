@@ -5,6 +5,7 @@ import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Hospitalizati
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Microsurgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Surgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
+import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/doctor_info_screen.dart';
 import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
 import 'package:flutter/material.dart';
@@ -297,60 +298,6 @@ class _ButtonListState extends State<ButtonList> {
 class All extends StatelessWidget {
   const All({super.key});
 
-  Future<void> sendRequest(BuildContext context, int doctorId) async {
-    final url = 'http://192.168.50.226:5297/api/Doctors/GetDoctorById?doctorId=$doctorId'; // Adjust URL construction based on your API
-    try {
-      final response = await http.get(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        // Parse the response data (adjust based on your actual response structure)
-        var responseData = jsonDecode(response.body);
-        var doctorinfo = responseData['doctorinfo'];
-        var reviews = responseData['reviews'];
-
-        // Navigate to the DoctorDetailsScreen and pass necessary data
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DoctorDetailsScreen(
-              doctorInfo: doctorinfo,
-              reviews: reviews,
-            ),
-          ),
-        );
-        print('Request successful');
-      } else {
-        // Handle other status codes (e.g., display an error message)
-        throw Exception('Failed to load doctor details');
-      }
-    } catch (e) {
-      // Handle exceptions thrown during the request
-      print('Exception during request: $e');
-      // Display an error dialog or message to the user
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to fetch doctor details. Please try again later.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -360,17 +307,18 @@ class All extends StatelessWidget {
             List<DoctorModel> allDoctorsList = snapshot.data ?? [];
             return ListView.separated(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 DoctorModel doctor = allDoctorsList[index];
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   width: 380,
                   height: 120,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           color: Colors.grey,
                           offset: Offset(0, 2),
@@ -381,14 +329,23 @@ class All extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                if (doctor.id != null) {
-                sendRequest(context,doctor.id!); // Send request with doctor.id
-                } else {
-                // Handle the case when doctor.id is null
-                print('Doctor ID is null');
-                }
-                },
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DoctorInfoScreen(
+                                doctorModel: doctor,
+                              ),
+                            ),
+                          );
+                          // Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //         builder: (context) => DoctorDetailsScreen(
+                          //           doctorInfo: doctorinfo,
+                          //           reviews: reviews,
+                          //         ),
+                          //       ));
+                        },
                         child: Container(
                           color: Colors.transparent,
                           width: 380,
@@ -402,18 +359,20 @@ class All extends StatelessWidget {
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
+                                // Adjust the border radius as needed
                                 child: Container(
                                   width: 100,
+                                  // Adjust the width and height as needed to make it square
                                   height: 100,
                                   child: Image.network(
-                                      "http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
-                                          "asset/images/DoctorImage.png"),
+                                      "${ApiService.IPAdres}/TempFileStorage/${doctor.pathToPhoto}",fit: BoxFit.cover,),
                                 ),
                               ),
                               SizedBox(width: 18.0),
                               Expanded(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(doctor.name ?? "Бош",
@@ -424,7 +383,8 @@ class All extends StatelessWidget {
                                         style: TextStyle(fontSize: 16.0)),
                                     Text(doctor.phoneNumber ?? "bosh",
                                         style: TextStyle(
-                                            fontSize: 14.0, color: Colors.grey)),
+                                            fontSize: 14.0,
+                                            color: Colors.grey)),
                                   ],
                                 ),
                               ),
@@ -437,21 +397,20 @@ class All extends StatelessWidget {
                         child: Column(
                           children: [
                             GestureDetector(
-                                onTap: () {
-                                   // Send request with doctor.id
-                                },
-                                child: SizedBox(
-                                  width: 35,
-                                  height: 35,
-                                  child: Icon(
-                                    Icons.favorite_outline,
-                                    size: 35,
-                                  ),
-                                )),
-                            Text(doctor.id.toString() ?? "ertgr"),
+                              onTap: () {},
+                              child: SizedBox(
+                                width: 35,
+                                height: 35,
+                                child: Icon(
+                                  Icons.favorite_outline,
+                                  size: 35,
+                                ),
+                              ),
+                            ),
+                            Text("${doctor.id}"),
                           ],
                         ),
-                      ),
+                      )
                     ],
                   ),
                 );
@@ -476,7 +435,6 @@ class All extends StatelessWidget {
         });
   }
 }
-
 
 class HOSPITALIZATION extends StatelessWidget {
   @override
@@ -536,14 +494,16 @@ class HOSPITALIZATION extends StatelessWidget {
                                   width: 100,
                                   // Adjust the width and height as needed to make it square
                                   height: 100,
-                                  child: Image.network("http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
-                                      "asset/images/DoctorImage.png"),
+                                  child: Image.network(
+                                      "http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
+                                          "asset/images/DoctorImage.png"),
                                 ),
                               ),
                               SizedBox(width: 18.0),
                               Expanded(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(doctor.name ?? "Бош",
@@ -554,26 +514,26 @@ class HOSPITALIZATION extends StatelessWidget {
                                         style: TextStyle(fontSize: 16.0)),
                                     Text(doctor.phoneNumber ?? "bosh",
                                         style: TextStyle(
-                                            fontSize: 14.0, color: Colors.grey)),
+                                            fontSize: 14.0,
+                                            color: Colors.grey)),
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child:  GestureDetector(
+                        child: GestureDetector(
                             child: SizedBox(
-                              width: 35,
-                              height: 35,
-                              child: Icon(
-                                Icons.favorite_outline,
-                                size: 35,
-                              ),
-                            )),
+                          width: 35,
+                          height: 35,
+                          child: Icon(
+                            Icons.favorite_outline,
+                            size: 35,
+                          ),
+                        )),
                       )
                     ],
                   ),
@@ -658,14 +618,16 @@ class CARDIOLOGY extends StatelessWidget {
                                   width: 100,
                                   // Adjust the width and height as needed to make it square
                                   height: 100,
-                                  child: Image.network("http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
-                                      "asset/images/DoctorImage.png"),
+                                  child: Image.network(
+                                      "http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
+                                          "asset/images/DoctorImage.png"),
                                 ),
                               ),
                               SizedBox(width: 18.0),
                               Expanded(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(doctor.name ?? "Бош",
@@ -676,26 +638,26 @@ class CARDIOLOGY extends StatelessWidget {
                                         style: TextStyle(fontSize: 16.0)),
                                     Text(doctor.phoneNumber ?? "bosh",
                                         style: TextStyle(
-                                            fontSize: 14.0, color: Colors.grey)),
+                                            fontSize: 14.0,
+                                            color: Colors.grey)),
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child:  GestureDetector(
+                        child: GestureDetector(
                             child: SizedBox(
-                              width: 35,
-                              height: 35,
-                              child: Icon(
-                                Icons.favorite_outline,
-                                size: 35,
-                              ),
-                            )),
+                          width: 35,
+                          height: 35,
+                          child: Icon(
+                            Icons.favorite_outline,
+                            size: 35,
+                          ),
+                        )),
                       )
                     ],
                   ),
@@ -718,7 +680,8 @@ class CARDIOLOGY extends StatelessWidget {
             );
           }
           return SizedBox();
-        });  }
+        });
+  }
 }
 
 class MICROSURGERY extends StatelessWidget {
@@ -779,14 +742,16 @@ class MICROSURGERY extends StatelessWidget {
                                   width: 100,
                                   // Adjust the width and height as needed to make it square
                                   height: 100,
-                                  child: Image.network("http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
-                                      "asset/images/DoctorImage.png"),
+                                  child: Image.network(
+                                      "http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
+                                          "asset/images/DoctorImage.png"),
                                 ),
                               ),
                               SizedBox(width: 18.0),
                               Expanded(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(doctor.name ?? "Бош",
@@ -797,26 +762,26 @@ class MICROSURGERY extends StatelessWidget {
                                         style: TextStyle(fontSize: 16.0)),
                                     Text(doctor.phoneNumber ?? "bosh",
                                         style: TextStyle(
-                                            fontSize: 14.0, color: Colors.grey)),
+                                            fontSize: 14.0,
+                                            color: Colors.grey)),
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child:  GestureDetector(
+                        child: GestureDetector(
                             child: SizedBox(
-                              width: 35,
-                              height: 35,
-                              child: Icon(
-                                Icons.favorite_outline,
-                                size: 35,
-                              ),
-                            )),
+                          width: 35,
+                          height: 35,
+                          child: Icon(
+                            Icons.favorite_outline,
+                            size: 35,
+                          ),
+                        )),
                       )
                     ],
                   ),
@@ -839,7 +804,8 @@ class MICROSURGERY extends StatelessWidget {
             );
           }
           return SizedBox();
-        });  }
+        });
+  }
 }
 
 class SURGERY extends StatelessWidget {
@@ -900,14 +866,16 @@ class SURGERY extends StatelessWidget {
                                   width: 100,
                                   // Adjust the width and height as needed to make it square
                                   height: 100,
-                                  child: Image.network("http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
-                                      "asset/images/DoctorImage.png"),
+                                  child: Image.network(
+                                      "http://192.168.50.226:5297/TempFileStorage/${doctor.pathToPhoto}" ??
+                                          "asset/images/DoctorImage.png"),
                                 ),
                               ),
                               SizedBox(width: 18.0),
                               Expanded(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(doctor.name ?? "Бош",
@@ -918,26 +886,26 @@ class SURGERY extends StatelessWidget {
                                         style: TextStyle(fontSize: 16.0)),
                                     Text(doctor.phoneNumber ?? "bosh",
                                         style: TextStyle(
-                                            fontSize: 14.0, color: Colors.grey)),
+                                            fontSize: 14.0,
+                                            color: Colors.grey)),
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child:  GestureDetector(
+                        child: GestureDetector(
                             child: SizedBox(
-                              width: 35,
-                              height: 35,
-                              child: Icon(
-                                Icons.favorite_outline,
-                                size: 35,
-                              ),
-                            )),
+                          width: 35,
+                          height: 35,
+                          child: Icon(
+                            Icons.favorite_outline,
+                            size: 35,
+                          ),
+                        )),
                       )
                     ],
                   ),
@@ -960,5 +928,6 @@ class SURGERY extends StatelessWidget {
             );
           }
           return SizedBox();
-        });  }
+        });
+  }
 }

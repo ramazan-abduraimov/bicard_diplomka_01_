@@ -14,11 +14,6 @@ class DateTimePicker extends StatefulWidget {
 
 class _DateTimePickerState extends State<DateTimePicker> {
   late DateTime _selectDate;
-  final String name = "John Doe";
-  final String email = "johndoe@example.com";
-  final String phoneNumber = "123-456-7890";
-  final String age = "30";
-  final int doctorId = 2;
 
   @override
   void initState() {
@@ -80,11 +75,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     ),
                     onPressed: () async {
                       await ApiService().submitAppointment(
-                          selectDate:
-                              context.read<CalendarProvider>().selectDate ??
-                                  DateTime.now(),
-                          time: context.read<CalendarProvider>().time?.time ??
-                              "09:00");
+                        selectDate:
+                            context.read<CalendarProvider>().selectDate ??
+                                DateTime.now(),
+                        time: context.read<CalendarProvider>().time?.time ??
+                            "09:00",
+                        id: context.read<CalendarProvider>().id ?? 1,
+                      );
                       _congratulations();
                     },
                     child: const Text(
@@ -127,7 +124,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   Container(
                     child: Text(
                       "Ваша встреча с доктором Дэвидом Пателем назначена на "
-                          "\n${context.read<CalendarProvider>().getDate()} ${context.read<CalendarProvider>().time?.time}.",
+                      "\n${context.read<CalendarProvider>().getDate()} ${context.read<CalendarProvider>().time?.time}.",
                       textAlign: TextAlign.center,
                     ),
                   ),

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 class CalendarProvider extends ChangeNotifier{
   DateTime? selectDate;
   Timeslots? time;
+  int? id;
   setTime(Timeslots currentTime){
     time = currentTime;
     notifyListeners();

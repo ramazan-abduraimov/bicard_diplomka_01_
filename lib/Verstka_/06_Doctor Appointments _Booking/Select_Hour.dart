@@ -14,23 +14,21 @@ class TimePicker extends StatefulWidget {
 }
 
 class _TimePickerState extends State<TimePicker> {
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<CalendarProvider>();
     final DateTime? selectDate = state.selectDate;
     return FutureBuilder(
-        future: ApiService()
-            .getDoctorAppointment(selectDate: selectDate ?? DateTime.now()),
+        future: ApiService().getDoctorAppointment(
+          selectDate: selectDate ?? DateTime.now(),
+          id: context.read<CalendarProvider>().id ?? 1,
+        ),
         builder: (context, snapshot) {
+          print(snapshot.error);
           if (snapshot.hasData) {
             return SlotsWidgets(listSlot: snapshot.data!.timeslots!);
           } else if (snapshot.hasError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text(
-                      'Не удалось создать учетную запись. Пожалуйста, повторите попытку позже.')),
-            );
+
             return Center(
               child: Text(snapshot.error.toString()),
             );
@@ -52,7 +50,6 @@ class SlotsWidgets extends StatefulWidget {
 }
 
 class _SlotsWidgetsState extends State<SlotsWidgets> {
-
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -72,7 +69,7 @@ class _SlotsWidgetsState extends State<SlotsWidgets> {
                 // setState(() {
                 //   _selectedSlot = time;
                 // });
-                  state.setTime(time!);
+                state.setTime(time!);
               },
         style: ElevatedButton.styleFrom(
           backgroundColor: state.time?.time == time?.time
