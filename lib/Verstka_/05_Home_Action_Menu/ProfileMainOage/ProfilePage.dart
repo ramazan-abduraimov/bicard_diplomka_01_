@@ -1,7 +1,8 @@
 import 'dart:io';
-
-import 'package:bicard_diplomka_01_/Verstka_/08_Favorites/Favorites.dart';
+import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/MyProfile.dart';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/FillYourProfile.dart';
+import 'package:bicard_diplomka_01_/api_service/api_service.dart';
+import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,7 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> getImage() async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -74,7 +75,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       "Profile",
                       style: TextStyle(fontSize: 20),
                     ),
-                    SizedBox(height: 25,),
+                    SizedBox(
+                      height: 25,
+                    ),
                     // Profile section (placeholder for image)
                     Container(
                       height: 170,
@@ -86,9 +89,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: CircleAvatar(
                               radius: 80,
                               backgroundImage:
-                              _image != null ? FileImage(_image!) : null,
+                                  _image != null ? FileImage(_image!) : null,
                               child: _image == null
-                                  ? Image.asset("asset/images/ProfileVector.png")
+                                  ? Image.asset(
+                                      "asset/images/ProfileVector.png")
                                   : null,
                             ),
                           ),
@@ -107,36 +111,36 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10,),
-                    Text("Daniel Martinez",style: TextStyle(fontSize: 19),),
-                    Text("0 996 990 557 612",style: TextStyle(fontSize: 14),),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Daniel Martinez",
+                      style: TextStyle(fontSize: 19),
+                    ),
+                    Text(
+                      "0 996 990 557 612",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     // List items
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        listItemWidget('Edit Profile', Icons.person_add_alt_1_rounded, () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) => FillYourProfile(),
-                          ));
+                        listItemWidget(
+                            'My Info Profile', Icons.person_add_alt_1_rounded,
+                            () {
+                          // ApiService().sendUserId(UserId)
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (BuildContext context) =>
+                          //       MyInfoProfilePage(userModel: ,),
+                          // ));
                         }),
-                        listItemWidget('Favorite', Icons.favorite, () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) => Favorites(),
-                          ));
-                        }),
-                        listItemWidget('Notifications', Icons.notifications,
-                                () {
-                              // Handle Notifications button tap
-                              print('Notifications button tapped');
-                            }),
                         listItemWidget('Settings', Icons.settings, () {
                           // Handle Settings button tap
                           print('Settings button tapped');
-                        }),
-                        listItemWidget('Help and Support', Icons.help, () {
-                          // Handle Help and Support button tap
-                          print('Help and Support button tapped');
                         }),
                         listItemWidget(
                             'Terms and Conditions', Icons.security_rounded, () {

@@ -214,10 +214,11 @@ class ApiService {
     }
   }
 
-  Future<void> sendDoctorId(String doctorId) async {
+
+  Future<void> sendUserId(String UserId) async {
     final url = Uri.parse(
-        'http://192.168.50.226:5297/api/Doctors/GetDoctorById?id=$doctorId');
-    print("${doctorId}");
+        'http://192.168.50.226:5297/api/Doctors/GetDoctorById?id=$UserId');
+    print("${UserId}");
     try {
       final response = await http.get(
         url,

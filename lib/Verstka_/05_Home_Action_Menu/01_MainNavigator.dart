@@ -2,7 +2,7 @@
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/Doctors_Appointment.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/HomePage.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/MapPage.dart';
-import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfilePage.dart';
+import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/ProfilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

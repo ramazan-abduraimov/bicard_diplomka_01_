@@ -172,17 +172,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
                       prefixIcon: Icon(Icons.person),
-                      labelText: "Имя",
-                    ),
-                  ),
-                  SizedBox(height: 25),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      prefixIcon: Icon(Icons.person_outline_outlined),
-                      labelText: "Фамилия",
+                      labelText: "Имя и Фамилия",
                     ),
                   ),
                   SizedBox(height: 25),
@@ -193,6 +183,16 @@ class _FillYourProfileState extends State<FillYourProfile> {
                       ),
                       prefixIcon: Icon(Icons.email_outlined),
                       labelText: "Электронной почты",
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      prefixIcon: Icon(Icons.numbers_outlined),
+                      labelText: "Телефон номер",
                     ),
                   ),
                   SizedBox(height: 25),
