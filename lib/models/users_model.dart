@@ -1,3 +1,5 @@
+import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
+
 class UserModel {
   String? userName;
   String? email;
@@ -6,13 +8,12 @@ class UserModel {
   String? sex;
   String? photoPath;
 
-  UserModel(
-      {this.userName,
-        this.email,
-        this.phoneNumber,
-        this.birthDay,
-        this.sex,
-        this.photoPath});
+  UserModel({this.userName,
+    this.email,
+    this.phoneNumber,
+    this.birthDay,
+    this.sex,
+    this.photoPath});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
@@ -34,3 +35,4 @@ class UserModel {
     return data;
   }
 }
+

@@ -1,14 +1,11 @@
 import 'dart:io';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/FillYourProfile.dart';
-import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class MyInfoProfilePage extends StatefulWidget {
-  final UserModel userModel;
 
-  const MyInfoProfilePage({super.key, required this.userModel});
+  const MyInfoProfilePage({super.key, });
 
   @override
   State<MyInfoProfilePage> createState() => _MyInfoProfilePageState();
@@ -93,10 +90,10 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                               child: CircleAvatar(
                                 radius: 80,
                                 backgroundImage:
-                                    _image != null ? FileImage(_image!) : null,
+                                _image != null ? FileImage(_image!) : null,
                                 child: _image == null
                                     ? Image.asset(
-                                        "asset/images/ProfileVector.png")
+                                    "asset/images/ProfileVector.png")
                                     : null,
                               ),
                             ),
@@ -133,7 +130,7 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Имя и Фамилия  ",
+                                    "Имя и Фамилия  ",
                                         style: TextStyle(
                                           fontSize: 20,
                                         ),
@@ -257,5 +254,6 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
         ),
       ),
     );
+
   }
 }

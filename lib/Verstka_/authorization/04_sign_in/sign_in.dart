@@ -65,130 +65,130 @@ class _SignInState extends State<SignIn> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                              children: [
-                Image.asset("asset/images/Vector.png"),
-                SizedBox(
-                  height: 15,
-                ),
-                Text("HealthPal",style: TextStyle(fontSize: 20),),
-                                SizedBox(
-                                  height: 15  ,
-                                ),
-                Text("Привет, с возвращением!",style: TextStyle(fontSize: 25),),
-                                SizedBox(
-                                  height: 10  ,
-                                ),
-                Text("Надеюсь, у тебя все хорошо.",style: TextStyle(fontSize: 15,color: Color.fromRGBO( 107, 114, 128, 1)),),
-                                SizedBox(height: 25,),
-                TextFormField(
-                  controller: _emailControllerIN,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      prefixIcon: Icon(Icons.email_outlined),
-                      labelText: "Электронной почты"),
-                ),
-                SizedBox(height: 25,),
-                TextFormField(
-                  controller: _passwordControllerIN,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      prefixIcon: Icon(Icons.lock),
-                      labelText: "Пароль"),
-                    obscureText: true,
-
-                ),
-                            SizedBox(height: 30,),
-                                ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all(
-                                        Color.fromRGBO(28, 42, 58, 1),
-                                      ),
-                                      foregroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                      minimumSize: MaterialStateProperty.all(Size(350, 50)),
-                                      shape: MaterialStateProperty.all<OutlinedBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(25.0),
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      if(_formKey.currentState!.validate()) {
-                                        _signInAccount(context);
-                                      }
-                                      // Navigator.of(context).push(MaterialPageRoute(
-                                      //   builder: (BuildContext context) => MainNavigator(),
-                                      // ));
-                                    },
-                                    child: Text(
-                                      "Sign In",
-                                      style: TextStyle(fontSize: 18),
-                                    )),
-                                SizedBox(height: 25,),
-                Text("or"),
-                                SizedBox(height: 20,),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    border: Border.all(color: Colors.black,width: 0.5),
-                  ),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("asset/images/Google - Original.png"),
-                        Text("   Продолжайте работать с Google")
-                      ],
-                    ),
-                  ),
-                ),
-                                SizedBox(height: 25,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                                    border: Border.all(color: Colors.black,width: 0.5),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {},
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset("asset/images/_Facebook.png"),
-                                        Text("    Продолжайте с Facebook")
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                SizedBox(height: 15,),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ForgetPassword()));
-                    },
-                    child: Text("Забыли пароль?")),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("У вас еще нет учетной записи?"),
+                    Image.asset("asset/images/Vector.png"),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text("HealthPal",style: TextStyle(fontSize: 20),),
+                    SizedBox(
+                      height: 15  ,
+                    ),
+                    Text("Привет, с возвращением!",style: TextStyle(fontSize: 25),),
+                    SizedBox(
+                      height: 10  ,
+                    ),
+                    Text("Надеюсь, у тебя все хорошо.",style: TextStyle(fontSize: 15,color: Color.fromRGBO( 107, 114, 128, 1)),),
+                    SizedBox(height: 25,),
+                    TextFormField(
+                      controller: _emailControllerIN,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          prefixIcon: Icon(Icons.email_outlined),
+                          labelText: "Электронной почты"),
+                    ),
+                    SizedBox(height: 25,),
+                    TextFormField(
+                      controller: _passwordControllerIN,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          prefixIcon: Icon(Icons.lock),
+                          labelText: "Пароль"),
+                      obscureText: true,
+
+                    ),
+                    SizedBox(height: 30,),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            Color.fromRGBO(28, 42, 58, 1),
+                          ),
+                          foregroundColor:
+                          MaterialStateProperty.all(Colors.white),
+                          minimumSize: MaterialStateProperty.all(Size(350, 50)),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          if(_formKey.currentState!.validate()) {
+                            _signInAccount(context);
+                          }
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (BuildContext context) => MainNavigator(),
+                          // ));
+                        },
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(fontSize: 18),
+                        )),
+                    SizedBox(height: 25,),
+                    Text("or"),
+                    SizedBox(height: 20,),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        border: Border.all(color: Colors.black,width: 0.5),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset("asset/images/Google - Original.png"),
+                            Text("   Продолжайте работать с Google")
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 25,),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        border: Border.all(color: Colors.black,width: 0.5),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset("asset/images/_Facebook.png"),
+                            Text("    Продолжайте с Facebook")
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15,),
                     TextButton(
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>  SignUp()));
+                                  builder: (context) => const ForgetPassword()));
                         },
-                        child: Text("Pегистрация"))
+                        child: Text("Забыли пароль?")),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("У вас еще нет учетной записи?"),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>  SignUp()));
+                            },
+                            child: Text("Pегистрация"))
+                      ],
+                    )
                   ],
-                )
-                              ],
-                            ),
+                ),
               ),
             ),
           ),

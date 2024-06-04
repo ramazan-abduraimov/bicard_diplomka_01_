@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
 import 'package:bicard_diplomka_01_/models/get_timetable_slots_model.dart';
+import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -214,27 +215,4 @@ class ApiService {
     }
   }
 
-
-  Future<void> sendUserId(String UserId) async {
-    final url = Uri.parse(
-        'http://192.168.50.226:5297/api/Doctors/GetDoctorById?id=$UserId');
-    print("${UserId}");
-    try {
-      final response = await http.get(
-        url,
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        // Handle success response
-        print('Request successful');
-      } else {
-        // Handle error response
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Handle network error
-      print('Request failed with error: $e');
-    }
-  }
 }

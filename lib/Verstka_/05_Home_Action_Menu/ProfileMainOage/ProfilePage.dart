@@ -1,12 +1,16 @@
 import 'dart:io';
-import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/MyProfile.dart';
-import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/FillYourProfile.dart';
-import 'package:bicard_diplomka_01_/api_service/api_service.dart';
-import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/MyProfile.dart';
 
 class ProfilePage extends StatefulWidget {
+  final String userId;
+
+  ProfilePage({required this.userId});
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -58,6 +62,24 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Future<void> sendUserId(String userId) async {
+    final response = await http.get(
+      Uri.parse(
+          'http://192.168.50.226:5297/api/Users/GetProfileIfno?userId=$userId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print(userId);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print('Profile info: $data');
+    } else {
+      throw Exception('Failed to load profile info');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +100,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(
                       height: 25,
                     ),
-                    // Profile section (placeholder for image)
                     Container(
                       height: 170,
                       width: 170,
@@ -125,30 +146,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(
                       height: 10,
                     ),
-                    // List items
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         listItemWidget(
                             'My Info Profile', Icons.person_add_alt_1_rounded,
-                            () {
-                          // ApiService().sendUserId(UserId)
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (BuildContext context) =>
-                          //       MyInfoProfilePage(userModel: ,),
-                          // ));
+                            () async {
+                          await sendUserId(widget.userId);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                MyInfoProfilePage(),
+                          ));
                         }),
                         listItemWidget('Settings', Icons.settings, () {
-                          // Handle Settings button tap
                           print('Settings button tapped');
                         }),
                         listItemWidget(
                             'Terms and Conditions', Icons.security_rounded, () {
-                          // Handle Terms and Conditions button tap
                           print('Terms and Conditions button tapped');
                         }),
                         listItemWidget('Log Out', Icons.logout, () {
-                          // Handle Log Out button tap
                           print('Log Out button tapped');
                         }),
                       ],
@@ -164,7 +181,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-// Widget to represent each list item
 Widget listItemWidget(String text, IconData? icon, VoidCallback onTap) {
   return GestureDetector(
     onTap: onTap,
@@ -179,7 +195,7 @@ Widget listItemWidget(String text, IconData? icon, VoidCallback onTap) {
           SizedBox(width: 8.0),
           Text(text),
           Spacer(),
-          Icon(Icons.chevron_right), // Chevron for navigation
+          Icon(Icons.chevron_right),
         ],
       ),
     ),
