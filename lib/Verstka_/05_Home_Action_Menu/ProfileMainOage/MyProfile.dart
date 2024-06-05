@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/FillYourProfile.dart';
+import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MyInfoProfilePage extends StatefulWidget {
+  final UserModel profileData;
 
-  const MyInfoProfilePage({super.key, });
+  const MyInfoProfilePage({super.key, required this.profileData});
 
   @override
   State<MyInfoProfilePage> createState() => _MyInfoProfilePageState();
@@ -15,8 +17,7 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
   File? _image;
 
   Future<void> getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -60,6 +61,8 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final profileData = widget.profileData;
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -89,11 +92,9 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                               onTap: getImage,
                               child: CircleAvatar(
                                 radius: 80,
-                                backgroundImage:
-                                _image != null ? FileImage(_image!) : null,
+                                backgroundImage: _image != null ? FileImage(_image!) : null,
                                 child: _image == null
-                                    ? Image.asset(
-                                    "asset/images/ProfileVector.png")
+                                    ? Image.asset("asset/images/ProfileVector.png")
                                     : null,
                               ),
                             ),
@@ -119,111 +120,115 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                     Row(
                       children: [
                         Container(
-                            height: 300,
-                            width: 250,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                    "Имя и Фамилия  ",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
+                          height: 300,
+                          width: 250,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Имя и Фамилия",
+                                      style: TextStyle(
+                                        fontSize: 20,
                                       ),
-                                      Text(
-                                        "Ramazan Abduraimov",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
+                                    ),
+                                    Text(
+                                      "${profileData.userName}",
+                                      style: TextStyle(
+                                        fontSize: 15,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Электронный Почты ",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
+                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Электронный Почты",
+                                      style: TextStyle(
+                                        fontSize: 20,
                                       ),
-                                      Text(
-                                        "abduraimovramazan5@gmail.com",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
+                                    ),
+                                    Text(
+                                      "${profileData.email}",
+                                      style: TextStyle(
+                                        fontSize: 15,
                                       ),
-                                    ],
-                                  ),
-                                ), Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Телефон номер ",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Text(
-                                        " 0990557612",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ), Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Возраст",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Text(
-                                        "22",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ), Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "пол",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Мужшина",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-
-
-                              ],
-                            )),
+                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Телефон номер",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${profileData.phoneNumber}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Возраст",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${profileData.age}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Пол",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${profileData.sex}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(
+                      height: 30,
+                    ),
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
@@ -242,7 +247,7 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                             MaterialPageRoute(builder: (context) => FillYourProfile()));
                       },
                       child: Text(
-                        " Edit Profile  ",
+                        "Edit Profile",
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -254,6 +259,5 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
         ),
       ),
     );
-
   }
 }

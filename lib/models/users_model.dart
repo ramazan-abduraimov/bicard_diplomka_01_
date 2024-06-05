@@ -1,17 +1,15 @@
-import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
-
 class UserModel {
   String? userName;
   String? email;
   String? phoneNumber;
-  String? birthDay;
+  String? age;
   String? sex;
   String? photoPath;
 
   UserModel({this.userName,
     this.email,
     this.phoneNumber,
-    this.birthDay,
+    this.age,
     this.sex,
     this.photoPath});
 
@@ -19,7 +17,7 @@ class UserModel {
     userName = json['userName'];
     email = json['email'];
     phoneNumber = json['phoneNumber'];
-    birthDay = json['birthDay'];
+    age = json['age'].toString();
     sex = json['sex'];
     photoPath = json['photoPath'];
   }
@@ -29,10 +27,11 @@ class UserModel {
     data['userName'] = this.userName;
     data['email'] = this.email;
     data['phoneNumber'] = this.phoneNumber;
-    data['birthDay'] = this.birthDay;
+    data['age'] = this.age;
     data['sex'] = this.sex;
     data['photoPath'] = this.photoPath;
     return data;
   }
 }
+
 

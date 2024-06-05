@@ -76,7 +76,6 @@ class ApiService {
       if (response.statusCode == 200) {
         // Обработка успешного ответа, парсинг данных, если нужно
         final data = jsonDecode(response.body);
-        print(data);
         return (data as List).map((doctor) {
           return DoctorModel.fromJson(doctor);
         }).toList();

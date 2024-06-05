@@ -1,26 +1,39 @@
 import 'dart:io';
+import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/MyProfile.dart';
+import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/MyProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String userId;
-
-  ProfilePage({required this.userId});
-
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   File? _image;
+  String? userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserId();
+  }
+
+  Future<void> _loadUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId');
+    });
+    if (userId != null) {
+      sendUserId(userId!);
+    }
+  }
 
   Future<void> getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -64,17 +77,20 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> sendUserId(String userId) async {
     final response = await http.get(
-      Uri.parse(
-          'http://192.168.50.226:5297/api/Users/GetProfileIfno?userId=$userId'),
+      Uri.parse('http://192.168.50.226:5297/api/Users/GetProfileIfno?id=$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print(userId);
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      print('Profile info: $data');
+    print(userId);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      UserModel data = UserModel.fromJson(jsonDecode(response.body));
+
+      print(response.body);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => MyInfoProfilePage(profileData: data),
+      ));
     } else {
       throw Exception('Failed to load profile info');
     }
@@ -109,11 +125,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             onTap: getImage,
                             child: CircleAvatar(
                               radius: 80,
-                              backgroundImage:
-                                  _image != null ? FileImage(_image!) : null,
+                              backgroundImage: _image != null ? FileImage(_image!) : null,
                               child: _image == null
-                                  ? Image.asset(
-                                      "asset/images/ProfileVector.png")
+                                  ? Image.asset("asset/images/ProfileVector.png")
                                   : null,
                             ),
                           ),
@@ -151,18 +165,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         listItemWidget(
                             'My Info Profile', Icons.person_add_alt_1_rounded,
-                            () async {
-                          await sendUserId(widget.userId);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                MyInfoProfilePage(),
-                          ));
-                        }),
+                                () async {
+                              if (userId != null) {
+                                await sendUserId(userId!);
+                              }
+                            }),
                         listItemWidget('Settings', Icons.settings, () {
                           print('Settings button tapped');
                         }),
-                        listItemWidget(
-                            'Terms and Conditions', Icons.security_rounded, () {
+                        listItemWidget('Terms and Conditions', Icons.security_rounded, () {
                           print('Terms and Conditions button tapped');
                         }),
                         listItemWidget('Log Out', Icons.logout, () {

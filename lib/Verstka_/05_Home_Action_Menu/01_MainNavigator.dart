@@ -22,7 +22,7 @@ class _MainNavigatorState extends State<MainNavigator> {
       HomePage(),
       MapPage(),
       DoctorsAppointment(),
-      ProfilePage(userId: '',)
+      ProfilePage()
     ];
     void onItemTap(int index) {
       setState(() {

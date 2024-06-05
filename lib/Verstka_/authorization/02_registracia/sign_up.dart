@@ -32,11 +32,10 @@ class _SignUpState extends State<SignUp> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var responseData = jsonDecode(response.body);
-        var userId = responseData['id'].toString(); // Convert userId to String
+        var userIdUp = responseData['id'].toString(); // Convert userId to String
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => ProfilePage(userId: userId),
+          builder: (BuildContext context) => ProfilePage(),
         ));
-        print(userId);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Не удалось создать учетную запись')),
