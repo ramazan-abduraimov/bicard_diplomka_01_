@@ -1,9 +1,9 @@
-
 import 'dart:io';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/02_registracia/FillYourProfile.dart';
 import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyInfoProfilePage extends StatefulWidget {
   final UserModel profileData;
@@ -58,6 +58,15 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
         );
       },
     );
+  }
+
+  Future<void> _clearProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('name');
+    await prefs.remove('email');
+    await prefs.remove('phone');
+    await prefs.remove('birthDay');
+    await prefs.remove('gender');
   }
 
   @override
@@ -243,9 +252,9 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                           ),
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => FillYourProfile()));
+                      onPressed: () async {
+                        await _clearProfileData(); // Clear specific profile data
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => FillYourProfile()));
                       },
                       child: Text(
                         "Edit Profile",

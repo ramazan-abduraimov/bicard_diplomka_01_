@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:bicard_diplomka_01_/Verstka_/authorization/04_sign_in/sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -26,9 +25,34 @@ class _FillYourProfileState extends State<FillYourProfile> {
   TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  Future<void> _clearProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('name');
+    await prefs.remove('email');
+    await prefs.remove('phone');
+    await prefs.remove('birthDay');
+    await prefs.remove('gender');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _clearProfileData();
+    _loadProfileData();
+  }
+  Future<void> _loadProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      nameController.text = prefs.getString('name') ?? '';
+      emailController.text = prefs.getString('email') ?? '';
+      phoneController.text = prefs.getString('phone') ?? '';
+      date = prefs.getString('birthDay') ?? '';
+      gender = prefs.getString('gender') ?? 'Мужчина';
+    });
+  }
+
   Future<void> getImage() async {
-    final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -161,11 +185,10 @@ class _FillYourProfileState extends State<FillYourProfile> {
     String Name = nameController.text;
     String Email = emailController.text;
     String PhoneNumber = phoneController.text;
-    String BirthDay = "2001-02-01";
-    String Sex = "мужщина";
+    String BirthDay = date;
+    String Sex = gender;
 
-
-    var url = Uri.parse('http://192.168.50.225:5297/api/Users/UpdateProfileIfno?id=$userId');
+    var url = Uri.parse('http://192.168.250.243:5297/api/Users/UpdateProfileIfno?id=$userId');
     var body = jsonEncode({'id': id ,'UserName': Name, 'Email': Email, 'PhoneNumber': PhoneNumber, 'BirthDay': BirthDay, 'Sex': Sex });
     try {
       var response = await http.post(url, body: body, headers: {
@@ -173,11 +196,13 @@ class _FillYourProfileState extends State<FillYourProfile> {
       });
       print(body);
       print(response.statusCode);
+      _saveProfileData(Name, Email, PhoneNumber, BirthDay, Sex);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var responseData = jsonDecode(response.body);
         var userIdUp = responseData['id'].toString(); // Convert userId to String
         _showCompletionDialog();
+        //_saveProfileData(Name, Email, PhoneNumber, BirthDay, Sex);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Не удалось ')),
@@ -189,6 +214,15 @@ class _FillYourProfileState extends State<FillYourProfile> {
         SnackBar(content: Text('Не удалось создать учетную запись. Пожалуйста, повторите попытку позже.')),
       );
     }
+  }
+
+  Future<void> _saveProfileData(String name, String email, String phone, String birthDay, String gender) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', name);
+    await prefs.setString('email', email);
+    await prefs.setString('phone', phone);
+    await prefs.setString('birthDay', birthDay);
+    await prefs.setString('gender', gender);
   }
 
   @override
@@ -297,7 +331,6 @@ class _FillYourProfileState extends State<FillYourProfile> {
                         if (_formKey.currentState!.validate()) {
                           _createAccount(context);
                         }
-
                       },
                       child: Text(
                         "Сохранить",

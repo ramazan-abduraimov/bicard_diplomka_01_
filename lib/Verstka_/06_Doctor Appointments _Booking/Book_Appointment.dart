@@ -81,7 +81,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         time: context.read<CalendarProvider>().time?.time ??
                             "09:00",
                         id: context.read<CalendarProvider>().id ?? 1,
-                        userName: context.read<CalendarProvider>().userName ?? "Noname"
                       );
                       _congratulations();
                     },
