@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> sendUserId(String userId) async {
     final response = await http.get(
-      Uri.parse('http://192.168.50.226:5297/api/Users/GetProfileIfno?id=$userId'),
+      Uri.parse('http://192.168.50.225:5297/api/Users/GetProfileIfno?id=$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -91,6 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => MyInfoProfilePage(profileData: data),
       ));
+      print(data);
     } else {
       throw Exception('Failed to load profile info');
     }

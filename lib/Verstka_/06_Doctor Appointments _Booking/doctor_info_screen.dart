@@ -1,15 +1,19 @@
+
+import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Book_Appointment.dart';
 import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
 import 'package:bicard_diplomka_01_/providers/calendar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'Book_Appointment.dart';
+
 
 class DoctorInfoScreen extends StatefulWidget {
   final DoctorModel doctorModel;
 
-  const DoctorInfoScreen({super.key, required this.doctorModel});
+  const DoctorInfoScreen({super.key, required this.doctorModel,});
+
+
 
   @override
   State<DoctorInfoScreen> createState() => _DoctorDetailsScreenState();
@@ -199,6 +203,8 @@ class _DoctorDetailsScreenState extends State<DoctorInfoScreen> {
                 style: TextStyle(fontSize: 18),
               ),
             ),
+
+
           ],
         ),
       ),

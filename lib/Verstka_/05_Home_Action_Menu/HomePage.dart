@@ -8,6 +8,7 @@ import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/doctor_info_screen.dart';
 import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
+import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
@@ -333,8 +334,7 @@ class All extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DoctorInfoScreen(
-                                doctorModel: doctor,
-                              ),
+                                  doctorModel: doctor),
                             ),
                           );
                           // Navigator.push(
@@ -365,7 +365,9 @@ class All extends StatelessWidget {
                                   // Adjust the width and height as needed to make it square
                                   height: 100,
                                   child: Image.network(
-                                      "${ApiService.IPAdres}/TempFileStorage/${doctor.pathToPhoto}",fit: BoxFit.cover,),
+                                    "${ApiService.IPAdres}/TempFileStorage/${doctor.pathToPhoto}",
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 18.0),

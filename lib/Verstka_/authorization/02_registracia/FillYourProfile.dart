@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bicard_diplomka_01_/Verstka_/authorization/04_sign_in/sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:http/io_client.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FillYourProfile extends StatefulWidget {
   const FillYourProfile({Key? key}) : super(key: key);
@@ -26,7 +27,8 @@ class _FillYourProfileState extends State<FillYourProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   Future<void> getImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -124,53 +126,9 @@ class _FillYourProfileState extends State<FillYourProfile> {
     );
   }
 
-
-  Future<void> _saveProfileData(BuildContext context) async {
-    // Prepare data to send
-    Map<String, dynamic> profileData = {
-      'name': nameController.text,
-      'email': emailController.text,
-      'phone': phoneController.text.toString(),
-      'birthday': date.toString(),
-      'gender': gender,
-    };
-    print(profileData);
-
-    // Bypass SSL verification (for development purposes only)
-    final ioc = HttpClient();
-    ioc.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-    final httpClient = IOClient(ioc);
-
-    final response = await httpClient.put(
-      Uri.parse('https://192.168.50.226:5297/api/Users/UpdateProfileIfno?id=2'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(profileData),
-    );
-
-    if (response.statusCode == 200) {
-      _showCompletionDialog();
-    } else {
-      print('Failed to save profile data: ${response.statusCode}');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Error"),
-            content: Text("Failed to save profile data."),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
-    }
+  Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
   }
 
   Future<void> _showCompletionDialog() async {
@@ -179,7 +137,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Поздравления"),
-          content: Text("Ваша учетная запись готова к использованию."),
+          content: Text("Ваша учетная запись успешно обновлена."),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -191,6 +149,46 @@ class _FillYourProfileState extends State<FillYourProfile> {
         );
       },
     );
+  }
+
+  void _createAccount(BuildContext context) async {
+    String? userId = await getUserId();
+    if (userId == null) {
+      // Handle case where userId is not available
+      return;
+    }
+    String id = userId;
+    String Name = nameController.text;
+    String Email = emailController.text;
+    String PhoneNumber = phoneController.text;
+    String BirthDay = "2001-02-01";
+    String Sex = "мужщина";
+
+
+    var url = Uri.parse('http://192.168.50.225:5297/api/Users/UpdateProfileIfno?id=$userId');
+    var body = jsonEncode({'id': id ,'UserName': Name, 'Email': Email, 'PhoneNumber': PhoneNumber, 'BirthDay': BirthDay, 'Sex': Sex });
+    try {
+      var response = await http.post(url, body: body, headers: {
+        'Content-Type': 'application/json',
+      });
+      print(body);
+      print(response.statusCode);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var responseData = jsonDecode(response.body);
+        var userIdUp = responseData['id'].toString(); // Convert userId to String
+        _showCompletionDialog();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Не удалось ')),
+        );
+      }
+    } catch (e) {
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Не удалось создать учетную запись. Пожалуйста, повторите попытку позже.')),
+      );
+    }
   }
 
   @override
@@ -222,7 +220,8 @@ class _FillYourProfileState extends State<FillYourProfile> {
                             onTap: getImage,
                             child: CircleAvatar(
                               radius: 80,
-                              backgroundImage: _image != null ? FileImage(_image!) : null,
+                              backgroundImage:
+                              _image != null ? FileImage(_image!) : null,
                               child: _image == null
                                   ? Icon(
                                 Icons.person,
@@ -236,7 +235,8 @@ class _FillYourProfileState extends State<FillYourProfile> {
                             right: 0,
                             child: TextButton(
                               onPressed: _showOptionsDialog,
-                              child: Image.asset('asset/images/pen_icon.png', width: 50, height: 50),
+                              child: Image.asset('asset/images/pen_icon.png',
+                                  width: 50, height: 50),
                             ),
                           ),
                         ],
@@ -295,8 +295,9 @@ class _FillYourProfileState extends State<FillYourProfile> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          _saveProfileData(context);
+                          _createAccount(context);
                         }
+
                       },
                       child: Text(
                         "Сохранить",
@@ -313,20 +314,4 @@ class _FillYourProfileState extends State<FillYourProfile> {
       ),
     );
   }
-}
-
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    final HttpClient client = super.createHttpClient(context);
-    client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-    return client;
-  }
-}
-
-void main() {
-  HttpOverrides.global = MyHttpOverrides();
-  runApp(MaterialApp(
-    home: FillYourProfile(),
-  ));
 }

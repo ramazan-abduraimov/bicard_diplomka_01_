@@ -4,15 +4,17 @@ import 'dart:convert';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
 import 'package:bicard_diplomka_01_/models/get_timetable_slots_model.dart';
-import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String IPAdres = "http://192.168.50.226:5297";
+  static const String IPAdres = "http://192.168.50.225:5297";
+
+
 
   Future<GetTimesModels?> getDoctorAppointment(
       {required DateTime selectDate, required int id}) async {
@@ -34,42 +36,60 @@ class ApiService {
     return null;
   }
 
-  Future<void> submitAppointment(
-      {required DateTime selectDate,
-      required String time,
-      required int id}) async {
-    print(id);
+
+  Future<void> submitAppointment({
+    required DateTime selectDate,
+    required String time,
+    required int id,
+    required String userName,
+  }) async {
     final url = Uri.parse('$IPAdres/api/Appointments/Create');
     final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({
-      "name": "Asan",
-      "email": "string",
-      "phoneNumber": "string",
-      "age": "string",
-      'date': '${DateFormat("yyyy-MM-dd").format(selectDate)}T$time:00Z',
-      "doctorId": id,
 
-      //  'DoctorID': 2,
-    });
-    print(body);
+    // Получение userId из SharedPreferences
+    final userId = await getUserId();
 
-    try {
-      final response = await http.post(url, headers: headers, body: body);
-      if (response.statusCode == 200) {
-        // Handle success
-        print('Appointment created successfully');
-      } else {
-        // Handle error
-        print('Failed to create appointment: ${response.body}');
+    if (userId != null) {
+      final body = jsonEncode({
+        "name": "Asan", // Здесь можете использовать переменную userName, если нужно
+        "email": "string",
+        "phoneNumber": "string",
+        "age": "string",
+        'date': '${DateFormat("yyyy-MM-dd").format(selectDate)}T$time:00Z',
+        "doctorId": id,
+        "userId": int.parse(userId) // Преобразование userId в нужный формат
+      });
+
+      print(body);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+        if (response.statusCode == 200) {
+          // Handle success
+          print('Appointment created successfully');
+        } else {
+          // Handle error
+          print('Failed to create appointment: ${response.body}');
+        }
+      } catch (e) {
+        print('Error: $e');
       }
-    } catch (e) {
-      print('Error: $e');
+    } else {
+      print('userId is null. Cannot submit appointment.');
     }
   }
 
+  Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
+
+
+
   Future<List<DoctorModel>> fetchDoctorsList() async {
     try {
-      var url = 'http://192.168.50.226:5297/api/Doctors/GetListOfDoctors';
+      var url = '$IPAdres/api/Doctors/GetListOfDoctors';
       var uri = Uri.parse(url).replace(queryParameters: {'speciality': ''});
       ;
       final response = await http.get(uri);
@@ -213,5 +233,4 @@ class ApiService {
       throw 'Error fetching doctors list: $error';
     }
   }
-
 }

@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bicard_diplomka_01_/Verstka_/authorization/04_sign_in/sign_in.dart';
-// Import the new UserIdScreen
 
 class SignUp extends StatefulWidget {
   @override
@@ -20,8 +18,8 @@ class _SignUpState extends State<SignUp> {
     String name = _nameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
-    print(name);
-    var url = Uri.parse('http://192.168.50.226:5297/api/Users/register');
+
+    var url = Uri.parse('http://192.168.50.225:5297/api/Users/register');
     print(url);
     var body = jsonEncode({'userName': name, 'email': email, 'password': password});
     try {
@@ -34,7 +32,7 @@ class _SignUpState extends State<SignUp> {
         var responseData = jsonDecode(response.body);
         var userIdUp = responseData['id'].toString(); // Convert userId to String
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => ProfilePage(),
+          builder: (BuildContext context) => SignIn(),
         ));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

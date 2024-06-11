@@ -66,9 +66,6 @@ class _SlotsWidgetsState extends State<SlotsWidgets> {
         onPressed: time?.status == "booked"
             ? null
             : () {
-                // setState(() {
-                //   _selectedSlot = time;
-                // });
                 state.setTime(time!);
               },
         style: ElevatedButton.styleFrom(
