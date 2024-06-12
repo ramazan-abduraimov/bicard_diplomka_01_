@@ -80,9 +80,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
                                 DateTime.now(),
                         time: context.read<CalendarProvider>().time?.time ??
                             "09:00",
-                        id: context.read<CalendarProvider>().id ?? 1,
+                        id: context.read<CalendarProvider>().id ?? 1, context1: context, context2: context,
                       );
-                      _congratulations();
+
                     },
                     child: const Text(
                       "Подтверить",
@@ -98,65 +98,5 @@ class _DateTimePickerState extends State<DateTimePicker> {
     );
   }
 
-  Future<void> _congratulations() async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(30, 25, 20, 25),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset("asset/images/gotovo.png",
-                      width: 140, height: 140),
-                  const SizedBox(height: 15),
-                  const Text(
-                    "Поздравляю!",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  Container(
-                    child: Text(
-                      "Ваша встреча с доктором Дэвидом Пателем назначена на "
-                      "\n${context.read<CalendarProvider>().getDate()} ${context.read<CalendarProvider>().time?.time}.",
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        const Color.fromRGBO(28, 42, 58, 1),
-                      ),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      minimumSize:
-                          MaterialStateProperty.all(const Size(80, 50)),
-                      shape: MaterialStateProperty.all<OutlinedBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text(
-                      "Сделано",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+
 }

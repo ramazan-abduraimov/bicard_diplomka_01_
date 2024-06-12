@@ -1,10 +1,15 @@
 
+import 'dart:convert';
+
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/Doctors_Appointment.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/HomePage.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/MapPage.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/ProfilePage.dart';
+import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 
 
 
@@ -16,13 +21,14 @@ class MainNavigator extends StatefulWidget {
 
 class _MainNavigatorState extends State<MainNavigator> {
   var selectedIndex = 0;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context  ) {
     List<Widget> screens = [
       HomePage(),
       MapPage(),
       DoctorsAppointment(),
-      ProfilePage()
+      ProfilePage(treaData: UserModel() ),
     ];
     void onItemTap(int index) {
       setState(() {
@@ -64,6 +70,7 @@ class _MainNavigatorState extends State<MainNavigator> {
             label: "Записаться",
           ),
           BottomNavigationBarItem(
+
             icon: Image.asset(
               "asset/images/Profile.png",
               width: 21,
@@ -80,4 +87,5 @@ class _MainNavigatorState extends State<MainNavigator> {
 
     );
   }
+
 }

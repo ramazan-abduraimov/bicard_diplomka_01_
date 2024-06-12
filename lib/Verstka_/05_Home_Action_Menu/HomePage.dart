@@ -6,6 +6,7 @@ import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Microsurgery.
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Surgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/doctor_info_screen.dart';
+import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/searchDoctors.dart';
 import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
 import 'package:bicard_diplomka_01_/models/users_model.dart';
@@ -89,12 +90,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => Searchdoctors(),
+                        ));
+                      },
                       child: const CircleAvatar(
                         radius: 24,
                         backgroundColor: Color.fromRGBO(243, 244, 246, 1),
                         child: Icon(
-                          Icons.notifications_active_rounded,
+                          Icons.search,
                           size: 25,
                         ),
                       ),
@@ -104,24 +109,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 15,
                 ),
-                TextFormField(
-                    decoration: const InputDecoration(
-                        filled: true,
-                        // Fill the background with color
-                        fillColor: Color.fromRGBO(243, 244, 246, 1),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 244, 246, 1),
-                          ), // Border color
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Color.fromRGBO(156, 163, 175, 1),
-                        ),
-                        labelText: "Search doctor...",
-                        labelStyle: TextStyle(
-                            color: Color.fromRGBO(156, 163, 175, 1)))),
+
                 SizedBox(
                   height: 15,
                 ),
@@ -206,6 +194,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
 
 class ButtonList extends StatefulWidget {
   @override

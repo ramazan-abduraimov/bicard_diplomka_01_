@@ -27,7 +27,7 @@ void _signInAccount(BuildContext context) async {
   String email = _emailControllerIN.text;
   String password = _passwordControllerIN.text;
 
-  var url = Uri.parse('http://192.168.250.243:5297/api/Users/login');
+  var url = Uri.parse('http://192.168.50.225:5297/api/Users/login');
   var body = jsonEncode({'email': email, 'password': password});
   try {
     var response = await http.post(url, body: body, headers: {
