@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
-import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/searchDoctors.dart';
 import 'package:bicard_diplomka_01_/models/appointmentsModel.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
 import 'package:bicard_diplomka_01_/models/get_timetable_slots_model.dart';
@@ -15,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/calendar_provider.dart';
 
 class ApiService {
-  static const String IPAdres = "http://192.168.50.225:5297";
+  static const String IPAdres = "http://192.168.159.243:5297";
 
   Future<GetTimesModels?> getDoctorAppointment(
       {required DateTime selectDate, required int id}) async {
@@ -346,7 +345,7 @@ class ApiService {
 
     try {
       var url =
-          '$IPAdres/api/Appointments/GetConfirmedAppointmentsByUserId?id=$userId';
+          '$IPAdres/api/Appointments/GetAppointmentsByUserId?id=$userId';
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       print(uri);

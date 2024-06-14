@@ -18,7 +18,7 @@ class _DoctorsAppointmentState extends State<DoctorsAppointment> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Center(child: Text("Мои заказы ")),
+        title: Center(child: Text("Менин жазылууларым ")),
       ),
       body: RefreshIndicator(
         onRefresh: () async {},
@@ -46,7 +46,7 @@ class _DoctorsAppointmentState extends State<DoctorsAppointment> {
                                 selectedIndex = 1;
                               });
                             },
-                            child: Text('Cвяжитесь с вами'),
+                            child: Text('Кутуудомун'),
                           ),
                         ),
                       ),
@@ -63,7 +63,7 @@ class _DoctorsAppointmentState extends State<DoctorsAppointment> {
                                 selectedIndex = 0;
                               });
                             },
-                            child: Text('Предстоящий'),
+                            child: Text('Жазылдым'),
                           ),
                         ),
                       ),
@@ -153,7 +153,7 @@ class Uncoming extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      doctor.date ?? "Time",
+                      doctor.appointmentDate ?? "Time",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -183,8 +183,10 @@ class Uncoming extends StatelessWidget {
                                 // Border details
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              child: Image.asset(
-                                  "asset/images/DoctorImage.png"),
+                              child: Image.network(
+                                "${ApiService.IPAdres}/TempFileStorage/${doctor.doctorPhoto}",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           SizedBox(width: 18.0),
@@ -193,21 +195,19 @@ class Uncoming extends StatelessWidget {
                             children: [
                               SizedBox(height: 20),
                               Text(
-                                "Dr. James Robinson",
+                                doctor.doctorName ??
+                                "Name",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
                                 ),
                               ),
                               Text(
-                                "Orthopedic Surgery",
+                                doctor.doctorSpeciality ??
+                                "Speciality",
                                 style: TextStyle(fontSize: 16.0),
                               ),
-                              Text(
-                                "Elite Ortho Clinic, USA",
-                                style: TextStyle(
-                                    fontSize: 14.0, color: Colors.grey),
-                              ),
+
                             ],
                           ),
                         ],
@@ -302,7 +302,7 @@ class CompletedContainer extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(doctor.date ?? "tima",
+                    Text(doctor.appointmentDate ?? "tima",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -330,8 +330,10 @@ class CompletedContainer extends StatelessWidget {
                               // Border details
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: Image.asset(
-                                "asset/images/DoctorImage.png"),
+                            child: Image.network(
+                              "${ApiService.IPAdres}/TempFileStorage/${doctor.doctorPhoto}",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         SizedBox(width: 18.0),
@@ -339,14 +341,11 @@ class CompletedContainer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 20,),
-                            Text("Dr. James Robinson", style: TextStyle(
+                            Text(doctor.doctorName ?? "Name", style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0)),
-                            Text("Orthopedic Surgery",
+                            Text( doctor.doctorSpeciality ?? "Speciality",
                                 style: TextStyle(fontSize: 16.0)),
-                            Text("Elite Ortho Clinic, USA",
-                                style: TextStyle(
-                                    fontSize: 14.0, color: Colors.grey)),
                           ],
                         ),
                       ],

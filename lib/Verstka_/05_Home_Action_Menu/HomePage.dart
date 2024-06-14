@@ -33,11 +33,6 @@ class DoctorDoc {
   });
 }
 
-final doctorsinfo = DoctorDoc(
-  name: 'Дэвид Патель',
-  specialization: 'Кардиолог',
-  clinic: 'Золотой кардиологический центр',
-);
 
 class _HomePageState extends State<HomePage> {
   double FotoSize = 85;
@@ -162,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                                     Icons.star,
                                     color: Colors.yellow,
                                   ),
-                                  Text("4.8"),
+                                 // Text("4.8"),
                                 ],
                               ),
                             ),
@@ -175,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "Категория врачей",
+                    "Дарыгерлер категориясы",
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
@@ -219,15 +214,15 @@ class _ButtonListState extends State<ButtonList> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
-              _buildButton(0, "All"),
+              _buildButton(0, "Бардыгы"),
               SizedBox(width: 15),
-              _buildButton(1, "HOSPITALIZATION"),
+              _buildButton(1, "Ооруканага жаткыруу"),
               SizedBox(width: 15),
-              _buildButton(2, "CARDIOLOGY"),
+              _buildButton(2, "Кардиология"),
               SizedBox(width: 15),
-              _buildButton(3, "MICROSURGERY"),
+              _buildButton(3, "Микрохирургия"),
               SizedBox(width: 15),
-              _buildButton(4, "SURGERY"),
+              _buildButton(4, "Операция"),
             ],
           ),
         ),
@@ -372,7 +367,7 @@ class All extends StatelessWidget {
                                             fontSize: 20.0)),
                                     Text(doctor.speciality ?? " Bosh",
                                         style: TextStyle(fontSize: 16.0)),
-                                    Text(doctor.phoneNumber ?? "bosh",
+                                    Text(doctor.education ?? "bosh",
                                         style: TextStyle(
                                             fontSize: 14.0,
                                             color: Colors.grey)),

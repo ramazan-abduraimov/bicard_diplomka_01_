@@ -75,7 +75,7 @@ class _SearchdoctorsState extends State<Searchdoctors> {
 }
 Future<List<DoctorModel>> searchDoctorsList([String? searchTerm]) async {
   try {
-    var url = 'http://192.168.50.225:5297/api/Doctors/SearchByName?name=$searchTerm';
+    var url = 'http://192.168.201.14:5297/api/Doctors/SearchByName?name=$searchTerm';
     print(url);
 
     var uri = Uri.parse(url);

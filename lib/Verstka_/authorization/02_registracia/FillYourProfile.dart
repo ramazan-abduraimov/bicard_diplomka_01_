@@ -1,7 +1,7 @@
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/01_MainNavigator.dart';
-import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/MyProfile.dart';
 import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
 
   Future<void> getImage() async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -194,7 +194,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
   Future<void> sendUserId(String userId) async {
     final response = await http.get(
       Uri.parse(
-          'http://192.168.50.225:5297/api/Users/GetProfileIfno?id=$userId'),
+          'http://192.168.159.243:5297/api/Users/GetProfileIfno?id=$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -231,7 +231,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
     String sex = gender;
 
     var url = Uri.parse(
-        'http://192.168.50.225:5297/api/Users/UpdateProfileIfno?id=$userId');
+        'http://192.168.159.243:5297/api/Users/UpdateProfileIfno?id=$userId');
 
     var request = http.MultipartRequest('POST', url)
       ..fields['UserName'] = name
@@ -291,7 +291,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Fill Your Profile",
+          "Профилиңизди Толтуруңуз",
           style: TextStyle(color: Color.fromARGB(153, 0, 0, 0)),
         ),
       ),
@@ -316,12 +316,12 @@ class _FillYourProfileState extends State<FillYourProfile> {
                             child: CircleAvatar(
                               radius: 80,
                               backgroundImage:
-                                  _image != null ? FileImage(_image!) : null,
+                              _image != null ? FileImage(_image!) : null,
                               child: _image == null
                                   ? Icon(
-                                      Icons.person,
-                                      size: 80,
-                                    )
+                                Icons.person,
+                                size: 80,
+                              )
                                   : null,
                             ),
                           ),
@@ -381,7 +381,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
                           Color.fromRGBO(28, 42, 58, 1),
                         ),
                         foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                        MaterialStateProperty.all(Colors.white),
                         minimumSize: MaterialStateProperty.all(Size(350, 50)),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(

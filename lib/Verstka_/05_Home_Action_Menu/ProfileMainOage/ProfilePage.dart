@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> sendUserId(String userId) async {
     final response = await http.get(
-      Uri.parse('http://192.168.50.225:5297/api/Users/GetProfileIfno?id=$userId'),
+      Uri.parse('http://192.168.159.243:5297/api/Users/GetProfileIfno?id=$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -93,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     Text(
-                      "Profile",
+                      "Профиль",
                       style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(
@@ -131,19 +131,19 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         listItemWidget(
-                            'My Info Profile', Icons.person_add_alt_1_rounded,
+                            'Менин Маалымат Профилим', Icons.person_add_alt_1_rounded,
                                 () async {
                               if (userId != null) {
                                 await sendUserId(userId!);
                               }
                             }),
-                        listItemWidget('Settings', Icons.settings, () {
-                          print('Settings button tapped');
+                        listItemWidget('Орнотуулар', Icons.settings, () {
+                          print('Орнотуулар ');
                         }),
-                        listItemWidget('Terms and Conditions', Icons.security_rounded, () {
+                        listItemWidget('Шарттары ', Icons.security_rounded, () {
                           print('Terms and Conditions button tapped');
                         }),
-                        listItemWidget('Log Out', Icons.logout, () {
+                        listItemWidget('Чыгуу', Icons.logout, () {
                           print('Log Out button tapped');
                         }),
                       ],

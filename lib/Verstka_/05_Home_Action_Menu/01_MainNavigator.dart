@@ -8,7 +8,6 @@ import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage
 import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 
 
@@ -49,8 +48,10 @@ class _MainNavigatorState extends State<MainNavigator> {
               "asset/images/homeNotifigation.png",
               width: 23.36,
               height: 23.6,
+              color: Colors.grey,
             ),
-            label: "Home",
+            label: "Үй",
+
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -58,7 +59,7 @@ class _MainNavigatorState extends State<MainNavigator> {
               width: 20,
               height: 24.5,
             ),
-            label: "Map",
+            label: "Карта",
           ),
 
           BottomNavigationBarItem(
@@ -67,7 +68,7 @@ class _MainNavigatorState extends State<MainNavigator> {
               width: 23.35,
               height: 23.33,
             ),
-            label: "Записаться",
+            label: "Катталуу",
           ),
           BottomNavigationBarItem(
 
@@ -76,7 +77,7 @@ class _MainNavigatorState extends State<MainNavigator> {
               width: 21,
               height: 21,
             ),
-            label: "Profile",
+            label: "Профиль",
           ),
         ],
         selectedItemColor: Colors.black, // Set the selected item color

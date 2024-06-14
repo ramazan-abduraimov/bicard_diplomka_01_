@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bicard_diplomka_01_/Verstka_/authorization/04_sign_in/sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -14,12 +15,21 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  Future<void> _clearProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('name');
+    await prefs.remove('email');
+    await prefs.remove('phone');
+    await prefs.remove('birthDay');
+    await prefs.remove('gender');
+  }
+
   void _createAccount(BuildContext context) async {
     String name = _nameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    var url = Uri.parse('http://192.168.50.225:5297/api/Users/register');
+    var url = Uri.parse('http://192.168.159.243:5297/api/Users/register');
     print(url);
     var body = jsonEncode({'userName': name, 'email': email, 'password': password});
     try {
@@ -34,6 +44,8 @@ class _SignUpState extends State<SignUp> {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => SignIn(),
         ));
+        _clearProfileData();
+
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Не удалось создать учетную запись')),
@@ -60,13 +72,10 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset("asset/images/Vector.png",),
-                  SizedBox(height: 15,),
-                  Text("HealthPal", style: TextStyle(fontSize: 20),),
-                  SizedBox(height: 15,),
-                  Text("Создать аккаунт", style: TextStyle(fontSize: 25),),
+                  Image.asset("asset/images/bicard.jpg",width: 150,height: 140,),
+                  Text("Каттоо эсебин түзүү", style: TextStyle(fontSize: 25),),
                   SizedBox(height: 10,),
-                  Text("Мы здесь, чтобы помочь вам!", style: TextStyle(fontSize: 15, color: Color.fromRGBO(107, 114, 128, 1)),),
+                  Text("Биз сизге жардам берүү үчүн келдик!", style: TextStyle(fontSize: 15, color: Color.fromRGBO(107, 114, 128, 1)),),
                   SizedBox(height: 25,),
                   Form(
                     key: _formKey,
@@ -79,7 +88,7 @@ class _SignUpState extends State<SignUp> {
                               borderRadius: BorderRadius.all(Radius.circular(15)),
                             ),
                             prefixIcon: Icon(Icons.person),
-                            labelText: "Ваше имя",
+                            labelText: "Сиздин атыңыз",
                           ),
                         ),
                         SizedBox(height: 25,),
@@ -90,7 +99,7 @@ class _SignUpState extends State<SignUp> {
                               borderRadius: BorderRadius.all(Radius.circular(15)),
                             ),
                             prefixIcon: Icon(Icons.email_outlined),
-                            labelText: "Электронной почты",
+                            labelText: "Электрондук почта",
                           ),
                         ),
                         SizedBox(height: 25,),
@@ -101,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                               borderRadius: BorderRadius.all(Radius.circular(15)),
                             ),
                             prefixIcon: Icon(Icons.lock),
-                            labelText: "Пароль",
+                            labelText: "Сыр сөз",
                           ),
                           obscureText: true,
                         ),
@@ -128,13 +137,12 @@ class _SignUpState extends State<SignUp> {
                       }
                     },
                     child: Text(
-                      "Создать аккаунт",
+                      "Каттоо эсебин түзүү",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
-                  SizedBox(height: 10,),
-                  Text("or"),
-                  SizedBox(height: 20,),
+
+                  SizedBox(height: 40,),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -146,33 +154,17 @@ class _SignUpState extends State<SignUp> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset("asset/images/Google - Original.png"),
-                          Text("   Продолжайте работать с Google")
+                          Text("  Google менен иштөөнү улантыңыз")
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 25,),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      border: Border.all(color: Colors.black, width: 0.5),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset("asset/images/_Facebook.png"),
-                          Text("    Продолжайте с Facebook")
-                        ],
-                      ),
-                    ),
-                  ),
+
                   SizedBox(height: 15,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("У вас есть учетная запись? "),
+                      Text("Сиз каттодон өткөнсузбу? "),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -182,7 +174,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           );
                         },
-                        child: Text("Bойти"),
+                        child: Text("Кирүү"),
                       ),
                     ],
                   ),

@@ -27,7 +27,7 @@ void _signInAccount(BuildContext context) async {
   String email = _emailControllerIN.text;
   String password = _passwordControllerIN.text;
 
-  var url = Uri.parse('http://192.168.50.225:5297/api/Users/login');
+  var url = Uri.parse('http://192.168.159.243:5297/api/Users/login');
   var body = jsonEncode({'email': email, 'password': password});
   try {
     var response = await http.post(url, body: body, headers: {
@@ -47,7 +47,7 @@ void _signInAccount(BuildContext context) async {
       print(userId);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ваша учетная запись не найдена')),
+        SnackBar(content: Text('каттоо эсебиңиз табылган жок')),
       );
     }
   } catch (e) {
@@ -55,7 +55,7 @@ void _signInAccount(BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
           content: Text(
-              'Не удалось создать учетную запись. Пожалуйста, повторите попытку позже.')),
+              'каттоо эсебиңиз табылган жок.')),
     );
   }
 }
@@ -75,26 +75,17 @@ class _SignInState extends State<SignIn> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    Image.asset("asset/images/Vector.png"),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    Image.asset("asset/images/bicard.jpg",width: 150,height: 140,),
+
                     Text(
-                      "HealthPal",
+                      "Салам, кайтып келүүңүз менен!",
                       style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "Привет, с возвращением!",
-                      style: TextStyle(fontSize: 25),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      "Надеюсь, у тебя все хорошо.",
+                      "Ден соолугунуз жайында деп үмүттөнөм.",
                       style: TextStyle(
                           fontSize: 15,
                           color: Color.fromRGBO(107, 114, 128, 1)),
@@ -109,7 +100,7 @@ class _SignInState extends State<SignIn> {
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                           prefixIcon: Icon(Icons.email_outlined),
-                          labelText: "Электронной почты"),
+                          labelText: "Электрондук почта"),
                     ),
                     SizedBox(
                       height: 25,
@@ -121,7 +112,7 @@ class _SignInState extends State<SignIn> {
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                           prefixIcon: Icon(Icons.lock),
-                          labelText: "Пароль"),
+                          labelText: "Сыр сөз"),
                       obscureText: true,
                     ),
                     SizedBox(
@@ -147,15 +138,12 @@ class _SignInState extends State<SignIn> {
                           }
                         },
                         child: Text(
-                          "Sign In",
+                          "Кирүү",
                           style: TextStyle(fontSize: 18),
                         )),
+
                     SizedBox(
-                      height: 25,
-                    ),
-                    Text("or"),
-                    SizedBox(
-                      height: 20,
+                      height: 39,
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -168,7 +156,7 @@ class _SignInState extends State<SignIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset("asset/images/Google - Original.png"),
-                            Text("   Продолжайте работать с Google")
+                            Text(" Google менен иштөөнү улантыңыз")
                           ],
                         ),
                       ),
@@ -176,22 +164,7 @@ class _SignInState extends State<SignIn> {
                     SizedBox(
                       height: 25,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        border: Border.all(color: Colors.black, width: 0.5),
-                      ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset("asset/images/_Facebook.png"),
-                            Text("    Продолжайте с Facebook")
-                          ],
-                        ),
-                      ),
-                    ),
+
                     SizedBox(
                       height: 15,
                     ),
@@ -203,11 +176,11 @@ class _SignInState extends State<SignIn> {
                                   builder: (context) =>
                                       const ForgetPassword()));
                         },
-                        child: Text("Забыли пароль?")),
+                        child: Text("Сырсөздү унутуп калдым?")),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("У вас еще нет учетной записи?"),
+                        Text("Алгач ирет катталуу "),
                         TextButton(
                             onPressed: () {
                               Navigator.push(
@@ -215,7 +188,7 @@ class _SignInState extends State<SignIn> {
                                   MaterialPageRoute(
                                       builder: (context) => SignUp()));
                             },
-                            child: Text("Pегистрация"))
+                            child: Text("Каттоо"))
                       ],
                     )
                   ],
