@@ -29,7 +29,7 @@ class _SignUpState extends State<SignUp> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    var url = Uri.parse('http://192.168.159.243:5297/api/Users/register');
+    var url = Uri.parse('http://192.168.50.225:5297/api/Users/register');
     print(url);
     var body = jsonEncode({'userName': name, 'email': email, 'password': password});
     try {

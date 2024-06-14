@@ -1,4 +1,3 @@
-import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/appointmentsModel.dart';
 import 'package:flutter/material.dart';
@@ -139,15 +138,7 @@ class Uncoming extends StatelessWidget {
               ),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DoctorDetailsScreen(
-                        doctorInfo: doctorinfo,
-                        reviews: reviews,
-                      ),
-                    ),
-                  );
+
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,12 +283,6 @@ class CompletedContainer extends StatelessWidget {
               ),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DoctorDetailsScreen(doctorInfo: doctorinfo,
-                              reviews: reviews,),));
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

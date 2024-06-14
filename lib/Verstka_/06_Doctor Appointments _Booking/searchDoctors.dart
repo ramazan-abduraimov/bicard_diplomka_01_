@@ -15,6 +15,33 @@ class Searchdoctors extends StatefulWidget {
 class _SearchdoctorsState extends State<Searchdoctors> {
   final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
+  Future<List<DoctorModel>>? _futureDoctors;
+
+  Future<List<DoctorModel>> searchDoctorsList(String name) async {
+    try {
+      var url = 'http://192.168.50.225:5297/api/Doctors/SearchByName?name=$name';
+      print(url);
+
+      var uri = Uri.parse(url);
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return (data as List).map((doctor) {
+          return DoctorModel.fromJson(doctor);
+        }).toList();
+      } else {
+        throw 'Failed to fetch doctors list: ${response.statusCode}';
+      }
+    } catch (error) {
+      throw 'Error fetching doctors list: $error';
+    }
+  }
+
+  void _search() {
+    setState(() {
+      _futureDoctors = searchDoctorsList(_nameController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +50,9 @@ class _SearchdoctorsState extends State<Searchdoctors> {
         automaticallyImplyLeading: false,
       ),
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: () async {
+          _search();
+        },
         child: SafeArea(
           top: true,
           child: SingleChildScrollView(
@@ -50,21 +79,17 @@ class _SearchdoctorsState extends State<Searchdoctors> {
                         ),
                         SizedBox(width: 15),
                         IconButton(
-                          onPressed: () {
-                            // Example of using _nameController.text
-                            String searchTerm = _nameController.text;
-                            // Call your search function or method here with searchTerm
-                            searchDoctorsList(searchTerm);
-                            SearchDoctor();
-                          },
+                          onPressed: _search,
                           icon: Icon(Icons.search, size: 40),
                         ),
                       ],
                     ),
-                  ),SizedBox(height: 25,),
-                  SearchDoctor(),
+                  ),
+                  SizedBox(height: 25),
+                  _futureDoctors == null
+                      ? Container()
+                      : SearchDoctor(futureDoctors: _futureDoctors!),
                 ],
-
               ),
             ),
           ),
@@ -73,42 +98,26 @@ class _SearchdoctorsState extends State<Searchdoctors> {
     );
   }
 }
-Future<List<DoctorModel>> searchDoctorsList([String? searchTerm]) async {
-  try {
-    var url = 'http://192.168.201.14:5297/api/Doctors/SearchByName?name=$searchTerm';
-    print(url);
-
-    var uri = Uri.parse(url);
-    ;
-    final response = await http.get(uri);
-    if (response.statusCode == 200) {
-      // Обработка успешного ответа, парсинг данных, если нужно
-      final data = jsonDecode(response.body);
-      return (data as List).map((doctor) {
-        return DoctorModel.fromJson(doctor);
-      }).toList();
-      // Делайте что-то с данными
-    } else {
-      throw 'Failed to fetch doctors list: ${response.statusCode}';
-      // Обработка других кодов состояния, например, вывод сообщения об ошибке
-    }
-  } catch (error) {
-    // Обработка сетевых ошибок
-    throw 'Error fetching doctors list: $error';
-  }
-}
-
-
 
 class SearchDoctor extends StatelessWidget {
-  const SearchDoctor({super.key});
+  final Future<List<DoctorModel>> futureDoctors;
+
+  const SearchDoctor({required this.futureDoctors, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: searchDoctorsList(),
+    return FutureBuilder<List<DoctorModel>>(
+        future: futureDoctors,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          } else if (snapshot.hasData) {
             List<DoctorModel> allDoctorsList = snapshot.data ?? [];
             return ListView.separated(
               shrinkWrap: true,
@@ -116,8 +125,7 @@ class SearchDoctor extends StatelessWidget {
               itemBuilder: (context, index) {
                 DoctorModel doctor = allDoctorsList[index];
                 return Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   width: 380,
                   height: 120,
                   decoration: BoxDecoration(
@@ -141,14 +149,6 @@ class SearchDoctor extends StatelessWidget {
                                   doctorModel: doctor),
                             ),
                           );
-                          // Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) => DoctorDetailsScreen(
-                          //           doctorInfo: doctorinfo,
-                          //           reviews: reviews,
-                          //         ),
-                          //       ));
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -163,10 +163,8 @@ class SearchDoctor extends StatelessWidget {
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                // Adjust the border radius as needed
                                 child: Container(
                                   width: 100,
-                                  // Adjust the width and height as needed to make it square
                                   height: 100,
                                   child: Image.network(
                                     "${ApiService.IPAdres}/TempFileStorage/${doctor.pathToPhoto}",
@@ -177,8 +175,7 @@ class SearchDoctor extends StatelessWidget {
                               SizedBox(width: 18.0),
                               Expanded(
                                 child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(doctor.name ?? "Бош",
@@ -228,16 +225,9 @@ class SearchDoctor extends StatelessWidget {
               },
               itemCount: allDoctorsList.length,
             );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+          } else {
+            return SizedBox();
           }
-          return SizedBox();
         });
   }
 }

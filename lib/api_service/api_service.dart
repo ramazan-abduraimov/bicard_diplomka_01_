@@ -1,20 +1,37 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:bicard_diplomka_01_/models/appointmentsModel.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
 import 'package:bicard_diplomka_01_/models/get_timetable_slots_model.dart';
+import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../providers/calendar_provider.dart';
 
 class ApiService {
-  static const String IPAdres = "http://192.168.159.243:5297";
+  static const String IPAdres = "http://192.168.50.225:5297";
+  static UserModel user = UserModel();
+
+  Future<void> getUserInfo() async {
+    final userId = await getUserId();
+    final response = await http.get(
+      Uri.parse(
+          'http://192.168.50.225:5297/api/Users/GetProfileIfno?id=$userId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      user = UserModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load profile info');
+    }
+  }
 
   Future<GetTimesModels?> getDoctorAppointment(
       {required DateTime selectDate, required int id}) async {
@@ -36,6 +53,26 @@ class ApiService {
     return null;
   }
 
+  Future<void> sendUserId(String userId, BuildContext context) async {
+    final response = await http.get(
+      Uri.parse(
+          'http://192.168.50.225:5297/api/Users/GetProfileIfno?id=$userId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    print(userId);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      UserModel data = UserModel.fromJson(jsonDecode(response.body));
+      print(response.body);
+
+      print(data);
+    } else {
+      throw Exception('Failed to load profile info');
+    }
+  }
+
   Future<void> submitAppointment({
     required BuildContext context1,
     required BuildContext context2,
@@ -50,21 +87,16 @@ class ApiService {
     final userId = await getUserId();
     final prefs = await SharedPreferences.getInstance();
 
-    bool shouldSubmitAppointment =
-        true; // Флаг для указания на необходимость отправки запроса
+    bool shouldSubmitAppointment = true;
 
     if (userId != null) {
-      // Получение данных профиля из SharedPreferences
-      final name = prefs.getString('name') ?? '';
-      final email = prefs.getString('email') ?? '';
-      final phoneNumber = prefs.getString('phone') ?? '';
-      final birthDay = prefs.getString('birthDay') ?? '';
+
 
       // Check if any profile data is missing
-      if (name.isEmpty ||
-          email.isEmpty ||
-          phoneNumber.isEmpty ||
-          birthDay.isEmpty) {
+      if (user.userName == null || user.userName!.isEmpty ||
+          user.email == null || user.email!.isEmpty ||
+          user.phoneNumber == null || user.phoneNumber!.isEmpty ||
+          user.age == null || user.age!.isEmpty) {
         // Display dialog if any profile data is missing
         showDialog(
           context: context1,
@@ -83,23 +115,17 @@ class ApiService {
             );
           },
         );
-        shouldSubmitAppointment =
-            false; // Установка флага в false, чтобы запрос не отправлялся
+        shouldSubmitAppointment = false; // Установка флага в false, чтобы запрос не отправлялся
       }
 
       // Debugging statements to check values
-      print('name: $name');
-      print('email: $email');
-      print('phoneNumber: $phoneNumber');
-      print('birthDay: $birthDay');
-      print('userId: $userId');
-
+      print('name: $user');
       if (shouldSubmitAppointment) {
         final body = jsonEncode({
-          "name": name,
-          "email": email,
-          "phoneNumber": phoneNumber,
-          "age": birthDay,
+          "name": user.userName,
+          "email": user.email,
+          "phoneNumber": user.phoneNumber,
+          "age": user.age,
           'date': '${DateFormat("yyyy-MM-dd").format(selectDate)}T$time:00Z',
           "doctorId": id,
           "userId": int.parse(userId) // Преобразование userId в нужный формат
@@ -192,20 +218,20 @@ class ApiService {
     );
   }
 
-
   Future<List<DoctorModel>> fetchDoctorsList() async {
     try {
       var url = '$IPAdres/api/Doctors/GetListOfDoctors';
       var uri = Uri.parse(url).replace(queryParameters: {'speciality': ''});
       ;
       final response = await http.get(uri);
+
       if (response.statusCode == 200) {
         // Обработка успешного ответа, парсинг данных, если нужно
         final data = jsonDecode(response.body);
+        print(response.body);
         return (data as List).map((doctor) {
           return DoctorModel.fromJson(doctor);
         }).toList();
-        // Делайте что-то с данными
       } else {
         throw 'Failed to fetch doctors list: ${response.statusCode}';
         // Обработка других кодов состояния, например, вывод сообщения об ошибке
@@ -242,7 +268,7 @@ class ApiService {
     try {
       var url = '$IPAdres/api/Doctors/SearchBySpeciality';
       var uri =
-          Uri.parse(url).replace(queryParameters: {'speciality': 'CARDIOLOGY'});
+          Uri.parse(url).replace(queryParameters: {'speciality': 'Кардиолог'});
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
@@ -315,14 +341,6 @@ class ApiService {
       ;
       final response = await http.get(uri);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DoctorDetailsScreen(
-                doctorInfo: doctorinfo,
-                reviews: reviews,
-              ),
-            ));
         // Обработка успешного ответа, парсинг данных, если нужно
         final data = jsonDecode(response.body);
         print(data);
@@ -344,8 +362,7 @@ class ApiService {
     String? userId = await getUserId();
 
     try {
-      var url =
-          '$IPAdres/api/Appointments/GetAppointmentsByUserId?id=$userId';
+      var url = '$IPAdres/api/Appointments/GetAppointmentsByUserId?id=$userId';
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       print(uri);

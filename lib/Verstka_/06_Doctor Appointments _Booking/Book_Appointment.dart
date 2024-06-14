@@ -6,7 +6,9 @@ import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking
 import 'package:provider/provider.dart';
 
 class DateTimePicker extends StatefulWidget {
-  const DateTimePicker({Key? key  }) : super(key: key);
+  const DateTimePicker({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
@@ -80,9 +82,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
                                 DateTime.now(),
                         time: context.read<CalendarProvider>().time?.time ??
                             "09:00",
-                        id: context.read<CalendarProvider>().id ?? 1, context1: context, context2: context,
+                        id: context.read<CalendarProvider>().id ?? 1,
+                        context1: context,
+                        context2: context,
                       );
-
                     },
                     child: const Text(
                       "Подтверить",
@@ -97,6 +100,4 @@ class _DateTimePickerState extends State<DateTimePicker> {
       ),
     );
   }
-
-
 }

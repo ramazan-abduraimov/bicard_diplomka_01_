@@ -9,9 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../api_service/api_service.dart';
 
 class MyInfoProfilePage extends StatefulWidget {
-  final UserModel profileData;
-
-  const MyInfoProfilePage({super.key, required this.profileData});
+  const MyInfoProfilePage({super.key});
 
   @override
   State<MyInfoProfilePage> createState() => _MyInfoProfilePageState();
@@ -29,7 +27,7 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final profileData = widget.profileData;
+    final profileData = ApiService.user;
 
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +54,7 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: NetworkImage(
-                          "${ApiService.IPAdres}/TempFileStorage/${widget.profileData.photoPath}",
+                          "${ApiService.IPAdres}/TempFileStorage/${profileData.photoPath}",
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -182,8 +180,7 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                       backgroundColor: MaterialStateProperty.all(
                         Color.fromRGBO(28, 42, 58, 1),
                       ),
-                      foregroundColor:
-                          MaterialStateProperty.all(Colors.white),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
                       minimumSize: MaterialStateProperty.all(Size(380, 50)),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
@@ -191,7 +188,7 @@ class _MyInfoProfilePageState extends State<MyInfoProfilePage> {
                         ),
                       ),
                     ),
-                    onPressed: ()  {
+                    onPressed: () {
                       // await _clearProfileData(); // Clear specific profile data
                       Navigator.push(
                           context,

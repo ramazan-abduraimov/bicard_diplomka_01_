@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/01_MainNavigator.dart';
+import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -194,7 +195,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
   Future<void> sendUserId(String userId) async {
     final response = await http.get(
       Uri.parse(
-          'http://192.168.159.243:5297/api/Users/GetProfileIfno?id=$userId'),
+          'http://192.168.50.225:5297/api/Users/GetProfileIfno?id=$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -229,9 +230,15 @@ class _FillYourProfileState extends State<FillYourProfile> {
     String phoneNumber = phoneController.text;
     String birthDay = date; // Ensure date is correctly formatted if needed
     String sex = gender;
+    ApiService.user = UserModel(
+      userName: name,
+      email: email,
+      phoneNumber: phoneNumber,
+      sex: gender,
 
+    );
     var url = Uri.parse(
-        'http://192.168.159.243:5297/api/Users/UpdateProfileIfno?id=$userId');
+        'http://192.168.50.225:5297/api/Users/UpdateProfileIfno?id=$userId');
 
     var request = http.MultipartRequest('POST', url)
       ..fields['UserName'] = name
@@ -390,7 +397,6 @@ class _FillYourProfileState extends State<FillYourProfile> {
                         ),
                       ),
                       onPressed: () {
-
                         if (_formKey.currentState!.validate()) {
                           _createAccount(context);
                         }

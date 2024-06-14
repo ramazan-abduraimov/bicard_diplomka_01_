@@ -5,9 +5,11 @@ import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/Doctors_Appoint
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/HomePage.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/MapPage.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Home_Action_Menu/ProfileMainOage/ProfilePage.dart';
+import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 
 
@@ -20,6 +22,12 @@ class MainNavigator extends StatefulWidget {
 
 class _MainNavigatorState extends State<MainNavigator> {
   var selectedIndex = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ApiService().getUserInfo();
+  }
 
   @override
   Widget build(BuildContext context  ) {
@@ -27,7 +35,7 @@ class _MainNavigatorState extends State<MainNavigator> {
       HomePage(),
       MapPage(),
       DoctorsAppointment(),
-      ProfilePage(treaData: UserModel() ),
+      ProfilePage(),
     ];
     void onItemTap(int index) {
       setState(() {

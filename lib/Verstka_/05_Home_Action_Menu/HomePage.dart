@@ -4,12 +4,10 @@ import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Cardiology.da
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Hospitalization.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Microsurgery.dart';
 import 'package:bicard_diplomka_01_/Verstka_/05_Info_Category/Info_Surgery.dart';
-import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/Doctor_Details.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/doctor_info_screen.dart';
 import 'package:bicard_diplomka_01_/Verstka_/06_Doctor%20Appointments%20_Booking/searchDoctors.dart';
 import 'package:bicard_diplomka_01_/api_service/api_service.dart';
 import 'package:bicard_diplomka_01_/models/get_Doctors_model.dart';
-import 'package:bicard_diplomka_01_/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
@@ -321,14 +319,6 @@ class All extends StatelessWidget {
                                   doctorModel: doctor),
                             ),
                           );
-                          // Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) => DoctorDetailsScreen(
-                          //           doctorInfo: doctorinfo,
-                          //           reviews: reviews,
-                          //         ),
-                          //       ));
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -380,22 +370,7 @@ class All extends StatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: SizedBox(
-                                width: 35,
-                                height: 35,
-                                child: Icon(
-                                  Icons.favorite_outline,
-                                  size: 35,
-                                ),
-                              ),
-                            ),
-                            Text("${doctor.id}"),
-                          ],
-                        ),
+                        child: Text("${doctor.id}"),
                       )
                     ],
                   ),
@@ -453,14 +428,7 @@ class HOSPITALIZATION extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DoctorDetailsScreen(
-                                  doctorInfo: doctorinfo,
-                                  reviews: reviews,
-                                ),
-                              ));
+
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -577,14 +545,7 @@ class CARDIOLOGY extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DoctorDetailsScreen(
-                                  doctorInfo: doctorinfo,
-                                  reviews: reviews,
-                                ),
-                              ));
+
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -701,14 +662,7 @@ class MICROSURGERY extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DoctorDetailsScreen(
-                                  doctorInfo: doctorinfo,
-                                  reviews: reviews,
-                                ),
-                              ));
+
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -825,14 +779,7 @@ class SURGERY extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DoctorDetailsScreen(
-                                  doctorInfo: doctorinfo,
-                                  reviews: reviews,
-                                ),
-                              ));
+
                         },
                         child: Container(
                           color: Colors.transparent,
